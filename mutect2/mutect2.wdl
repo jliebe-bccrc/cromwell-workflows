@@ -358,7 +358,7 @@ workflow Mutect2 {
                 ref_dict = ref_dict,
                 input_vcf = funcotate_vcf_input,
                 input_vcf_idx = funcotate_vcf_input_index,
-                reference_version = funco_reference_version,
+                reference_version = select_first([funco_reference_version, "hg38"]),
                 output_file_base_name = basename(funcotate_vcf_input, ".vcf") + ".annotated",
                 output_format = if defined(funco_output_format) then "" + funco_output_format else funco_default_output_format,
                 compress = if defined(funco_compress) then select_first([funco_compress]) else false,
