@@ -1,7 +1,7 @@
 # Mutect2 Workflow
 Workflow for somatic variant calling.
 
-Source GATK version of this workflow can be found at the [GATK GitHub repository]([https://github.com/gatk-workflows/seq-format-conversion](https://github.com/broadinstitute/gatk/tree/master/scripts/mutect2_wdl) for mutect2 workflows.
+Source GATK version of this workflow can be found at the [GATK GitHub repository](https://github.com/broadinstitute/gatk/tree/master/scripts/mutect2_wdl) for mutect2 workflows.
 
 **mutect2.inputs.json:** 
 
