@@ -77,7 +77,7 @@ struct Runtime {
     Int machine_mem
     Int command_mem
     Int disk
-    Int boot_disk_size
+    #Int boot_disk_size
 }
 
 workflow Mutect2 {
@@ -141,7 +141,7 @@ workflow Mutect2 {
       Int small_task_cpu = 2
       Int small_task_mem = 4
       Int small_task_disk = 100
-      Int boot_disk_size = 12
+      #Int boot_disk_size = 12
       Int learn_read_orientation_mem = 8000
       Int filter_alignment_artifacts_mem = 9000
 
@@ -192,7 +192,7 @@ workflow Mutect2 {
     Runtime standard_runtime = {"gatk_docker": gatk_docker, "gatk_override": gatk_override,
             "max_retries": max_retries_or_default, "preemptible": preemptible_or_default, "cpu": small_task_cpu,
             "machine_mem": small_task_mem * 1000, "command_mem": small_task_mem * 1000 - 500,
-            "disk": small_task_disk + disk_pad, "boot_disk_size": boot_disk_size}
+            "disk": small_task_disk + disk_pad}
 
 
     Int tumor_reads_size = ceil(size(tumor_reads, "GB") + size(tumor_reads_index, "GB"))
@@ -424,7 +424,7 @@ task SplitIntervals {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
+        #bootDiskSizeGb: runtime_params.boot_disk_size
         memory: runtime_params.machine_mem + " MB"
         disk: runtime_params.disk + " GB"
         preemptible: true
@@ -554,7 +554,7 @@ task M2 {
 
     runtime {
         docker: gatk_docker
-        bootDiskSizeGb: 12
+        #bootDiskSizeGb: 12
         memory: machine_mem + " MB"
         disk: select_first([disk_space, 100]) + " GB"
         preemptible: true
@@ -597,7 +597,7 @@ task MergeVCFs {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
+        #bootDiskSizeGb: runtime_params.boot_disk_size
         memory: runtime_params.machine_mem + " MB"
         disk: runtime_params.disk + " GB"
         preemptible: true
@@ -639,7 +639,7 @@ task MergeBamOuts {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
+        #bootDiskSizeGb: runtime_params.boot_disk_size
         memory: runtime_params.machine_mem + " MB"
         disk: select_first([disk_space, runtime_params.disk]) + " GB"
         preemptible: true
@@ -669,9 +669,9 @@ task MergeStats {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
+        #bootDiskSizeGb: runtime_params.boot_disk_size
         memory: runtime_params.machine_mem + " MB"
-        disks: runtime_params.disk + " GB"
+        disk: runtime_params.disk + " GB"
         preemptible: true
         maxRetries: runtime_params.max_retries
         cpu: runtime_params.cpu
@@ -701,7 +701,7 @@ task MergePileupSummaries {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
+        #bootDiskSizeGb: runtime_params.boot_disk_size
         memory: runtime_params.machine_mem + " MB"
         disk: runtime_params.disk + " GB"
         preemptible: true
@@ -735,7 +735,7 @@ task LearnReadOrientationModel {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
+        #bootDiskSizeGb: runtime_params.boot_disk_size
         memory: machine_mem + " MB"
         disk: runtime_params.disk + " GB"
         preemptible: true
@@ -766,7 +766,7 @@ task CalculateContamination {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
+        #bootDiskSizeGb: runtime_params.boot_disk_size
         memory: runtime_params.machine_mem + " MB"
         disk: runtime_params.disk + " GB"
         preemptible: true
@@ -825,7 +825,7 @@ task Filter {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
+        #bootDiskSizeGb: runtime_params.boot_disk_size
         memory: runtime_params.machine_mem + " MB"
         disk: select_first([disk_space, runtime_params.disk]) + " GB"
         preemptible: true
@@ -862,7 +862,7 @@ task FilterAlignmentArtifacts {
     String output_vcf_idx = output_vcf +  if compress then ".tbi" else ".idx"
 
     Int machine_mem = mem
-    Int command_mem = machine_mem - 500
+    Int command_mem = 5000
 
     parameter_meta{
       ref_fasta: {localization_optional: true}
@@ -889,12 +889,12 @@ task FilterAlignmentArtifacts {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
-        memory: machine_mem + " MB"
-        disk: runtime_params.disk + " GB"
+        #bootDiskSizeGb: runtime_params.boot_disk_size
+        memory: 24 + " GB"
+        disk: 200 + " GB"
         preemptible: true
         maxRetries: runtime_params.max_retries
-        cpu: runtime_params.cpu
+        cpu: 14
     }
 
     output {
@@ -941,7 +941,7 @@ task Funcotate {
        # You may have to change the following two parameter values depending on the task requirements
        Int default_ram_mb = 3000
        # WARNING: In the workflow, you should calculate the disk space as an input to this task (disk_space_gb).  Please see [TODO: Link from Jose] for examples.
-       Int default_disk_space_gb = 100
+       Int default_disk_space_gb = 150
      }
 
      # ==============
@@ -1021,12 +1021,12 @@ task Funcotate {
 
     runtime {
         docker: runtime_params.gatk_docker
-        bootDiskSizeGb: runtime_params.boot_disk_size
+        #bootDiskSizeGb: runtime_params.boot_disk_size
         memory: runtime_params.machine_mem + " MB"
         disk: select_first([disk_space, runtime_params.disk]) + " GB"
         preemptible: true
         maxRetries: runtime_params.max_retries
-        cpu: runtime_params.cpu
+        cpu: 6
     }
 
      output {
