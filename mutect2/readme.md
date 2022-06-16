@@ -9,6 +9,7 @@ Source GATK version of this workflow can be found at the [GATK GitHub repository
 * Replace "Mutect2.normal_reads_index" with the filepath to the index file (.bai) of the matched normal reads.
 * Replace "Mutect2.tumor_reads" with the filepath to the BAM file containing tumor reads.
 * Replace "Mutect2.tumor_reads_index" with the filepath to the index file (.bai) of the tumor reads.
+* Replace lines 17-23 with the filepaths to the appropriate reference file listed.
 * Replace "Mutect2.funco_data_sources_tar_gz" with the filepath to the tar and gzipped Funcotator references (see Confluence page on Mutect2 for more information).
 
 
