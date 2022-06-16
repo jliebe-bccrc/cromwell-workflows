@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/germline-pre-processing.wdl",
+  "WorkflowInputsUrl": "https://url/to/germline-pre-processing.hg38.wgs.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}
