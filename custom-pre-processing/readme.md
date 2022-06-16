@@ -7,6 +7,7 @@ Pre-processing follows the steps shown in the image below:
 
 <p align="center"><img src="https://drive.google.com/uc?id=14lxMPZcatIP5xFboYO--t71_LdHBN0FU" width="250"></p>
 
+---
 
 **custom-pre-processing.hg38.wgs.inputs.json:** 
 
@@ -26,3 +27,8 @@ Pre-processing follows the steps shown in the image below:
 **custom-pre-processing.wdl:**
 
 * No changes necessary.
+
+---
+
+### Expected Running Time
+* For 3 input uBAM files ~115GB each in size (running in parallel), custom-pre-processing will take ~24 hours to finish.
