@@ -19,3 +19,6 @@ Reference code for this workflow can be found at the [BioWDL GitHub repository](
 **flagstat.wdl:**
 
 * No changes necessary.
+
+**Expected Running Time**
+* For a 117GB input file, flagstat will take ~1 hour to finish
