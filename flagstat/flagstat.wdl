@@ -1,13 +1,14 @@
 version 1.0
 ## Copyright Aparicio Lab, 2022
 ## 
-## This WDL calls samtools flagstat on a list of BAM files
+## This WDL calls samtools flagstat on the input BAM file
 ##
 ## Requirements/expectations :
-## - BAM file(s)
+## - BAM file
+## - Sample ID
 ##
 ## Outputs :
-## - txt files containing the output of flagstat for each BAM file input
+## - txt file containing the output of flagstat
 
 
 # WORKFLOW DEFINITION
