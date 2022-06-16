@@ -3,6 +3,8 @@ Workflow for pre-processing of samples, and subsequent germline variant calling
 
 Takes an unmapped BAM file as input, and outputs analysis-ready BAM files along with germline variant annotations. Pipeline was developed by Microsoft and can be found in the [Microsoft GATK4 Genome Processing repository](https://github.com/microsoft/gatk4-genome-processing-pipeline-azure).
 
+---
+
 **germline-pre-processing.hg38.wgs.inputs.json:** 
 
 * Replace "base_file_name" with the sample ID of the sample you want to pre-process.
@@ -21,3 +23,8 @@ Takes an unmapped BAM file as input, and outputs analysis-ready BAM files along 
 **germline-pre-processing.wdl:**
 
 * No changes necessary.
+
+---
+
+### Expected Running Time
+* For a 79GB input file, germline-pre-processing will take ~28 hours to finish (~13.5 for pre-processing, plus ~14 for germline variant calling).
