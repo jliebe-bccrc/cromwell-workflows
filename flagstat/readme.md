@@ -3,6 +3,8 @@ Workflow for getting flagstat info from input BAM files - calls flagstat from sa
 
 Reference code for this workflow can be found at the [BioWDL GitHub repository](https://github.com/biowdl/tasks/blob/develop/samtools.wdl) for samtools workflows.
 
+---
+
 **flagstat.inputs.json:** 
 
 * Replace "input_bam" with the filepath to the BAM file you want to convert.
@@ -20,5 +22,7 @@ Reference code for this workflow can be found at the [BioWDL GitHub repository](
 
 * No changes necessary.
 
-###Expected Running Time
+---
+
+### Expected Running Time
 * For a 117GB input file, flagstat will take ~1 hour to finish
