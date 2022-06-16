@@ -1,6 +1,6 @@
 {
-  "WorkflowUrl": "https://url/to/workflow.wdl",
-  "WorkflowInputsUrl": "https://url/to/inputs.json",
+  "WorkflowUrl": "https://url/to/bam-to-unmapped-bams.wdl",
+  "WorkflowInputsUrl": "https://url/to/bam-to-unmapped-bams.inputs.json",
   "WorkflowOptionsUrl": null,
   "WorkflowDependenciesUrl": null
 }
