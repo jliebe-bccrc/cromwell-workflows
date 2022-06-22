@@ -1,13 +1,15 @@
 version 1.0
-## Copyright Aparicio Lab, 2022
+## Copyright Aparicio Lab (BC Cancer Research Centre), June 2022
 ## 
-## This WDL calls samtools flagstat on the input BAM file
+## This WDL calls samtools flagstat on the input BAM file.
 ##
-## Requirements/expectations :
+## Runtime parameters are optimized for Cromwell on Azure (Microsoft) implementation.
+##
+## Requirements/expectations:
 ## - BAM file
 ## - Sample ID
 ##
-## Outputs :
+## Outputs:
 ## - txt file containing the output of flagstat
 
 
