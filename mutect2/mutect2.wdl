@@ -66,6 +66,9 @@ version 1.0
 ## authorized to run all programs before running this script.  Please see the docker
 ## pages at https://hub.docker.com/r/broadinstitute/* for detailed licensing information
 ## pertaining to the included programs.
+##
+## Updated by Aparicio Lab (BC Cancer Research Centre) May 2022 to optimize runtime 
+## parameters for Cromwell on Azure implementation (instead of Google Cloud).
 
 
 struct Runtime {
