@@ -1,12 +1,6 @@
 version 1.0
 
-## Copyright Broad Institute, 2018 and Aparicio Lab (BCCRC), 2022
-##
-## This pipeline has been modified from its original, which can be found at 
-## https://github.com/microsoft/gatk4-genome-processing-pipeline-azure. Major changes include
-## removing all germline SNP/indel calling functionality; pipeline is now just used for
-## converting unmapped BAM files (uBAMs) into analysis-ready BAM files, that can be
-## used in later analysis (ex., somatic variant calling); and renaming the workflow to "PreProcessing".
+## Copyright Broad Institute, 2018
 ##
 ## This WDL pipeline implements data pre-processing according to the GATK Best Practices 
 ## (June 2016) for human whole-genome data.
@@ -31,6 +25,15 @@ version 1.0
 ## authorized to run all programs before running this script. Please see the docker
 ## page at https://hub.docker.com/r/broadinstitute/genomes-in-the-cloud/ for detailed
 ## licensing information pertaining to the included programs.
+##
+## UPDATE NOTES :
+## Updated by Aparicio Lab (BC Cancer Research Centre) May 2022.
+##
+## This pipeline has been modified from its original, which can be found at 
+## https://github.com/microsoft/gatk4-genome-processing-pipeline-azure. Major changes include
+## removing all germline SNP/indel calling functionality; pipeline is now just used for
+## converting unmapped BAM files (uBAMs) into analysis-ready BAM files, that can be
+## used in later analysis (ex., somatic variant calling); and renaming the workflow to "PreProcessing".
 
 import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/az1.1.0/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
 
