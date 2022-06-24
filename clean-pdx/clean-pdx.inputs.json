@@ -1,6 +1,6 @@
 {
-  "CleanPDX.input_bam": "/coaf3b65459446be3/inputs/SA1132/X2-A94383/SA1132X2_A94383_5995bf12.bam",
-  "CleanPDX.sample_ID": "A94383",
+  "CleanPDX.input_bam": "/filepath/to/bam_file.bam",
+  "CleanPDX.sample_ID": "sample_ID",
 
   "CleanPDX.mouse_human_genome_dict": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa.dict",
   "CleanPDX.mouse_human_genome_fasta": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa",
