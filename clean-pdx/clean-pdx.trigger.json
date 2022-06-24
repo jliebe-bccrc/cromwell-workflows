@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://coaf3b65459446be3.blob.core.windows.net/workflow-templates/clean-pdx/large-updated-clean-pdx.wdl",
+  "WorkflowInputsUrl": "https://coaf3b65459446be3.blob.core.windows.net/workflow-templates/clean-pdx/383-clean-pdx.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}

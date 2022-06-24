@@ -1,0 +1,14 @@
+{
+  "CleanPDX.input_bam": "/coaf3b65459446be3/inputs/SA1132/X2-A94383/SA1132X2_A94383_5995bf12.bam",
+  "CleanPDX.sample_ID": "A94383",
+
+  "CleanPDX.mouse_human_genome_dict": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa.dict",
+  "CleanPDX.mouse_human_genome_fasta": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa",
+  "CleanPDX.mouse_human_genome_fasta_index": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa.fai",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_sa": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa.sa",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_amb": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa.amb",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_bwt": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa.bwt",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_ann": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa.ann",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_pac": "/coaf3b65459446be3/workflow-templates/clean-pdx/refs/mouse_human_genome.fa.pac",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_alt": null
+}
