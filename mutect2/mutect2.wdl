@@ -283,7 +283,12 @@ workflow Mutect2 {
         }
     }
 
-    call MergeStats { input: stats = M2.stats, runtime_params = standard_runtime }
+    call MergeStats { 
+        input: 
+            stats = M2.stats, 
+            runtime_params = standard_runtime, 
+            output_stats_name = output_basename
+    }
 
     if (defined(variants_for_contamination)) {
         call MergePileupSummaries as MergeTumorPileups {
@@ -321,6 +326,7 @@ workflow Mutect2 {
             unfiltered_vcf = MergeVCFs.merged_vcf,
             unfiltered_vcf_idx = MergeVCFs.merged_vcf_idx,
             output_name = filtered_name,
+            output_stats_name = output_basename,
             compress = compress,
             mutect_stats = MergeStats.merged_stats,
             contamination_table = CalculateContamination.contamination_table,
@@ -661,13 +667,14 @@ task MergeStats {
     input {
       Array[File]+ stats
       Runtime runtime_params
+      String output_stats_name
     }
 
     command {
         set -e
         export GATK_LOCAL_JAR=~{default="/root/gatk.jar" runtime_params.gatk_override}
         gatk --java-options "-Xmx~{runtime_params.command_mem}m" MergeMutectStats \
-            -stats ~{sep=" -stats " stats} -O merged.stats
+            -stats ~{sep=" -stats " stats} -O ~{output_stats_name}-merged.stats
     }
 
     runtime {
@@ -681,7 +688,7 @@ task MergeStats {
     }
 
     output {
-        File merged_stats = "merged.stats"
+        File merged_stats = "~{output_stats_name}-merged.stats"
     }
 }
 
@@ -792,6 +799,7 @@ task Filter {
       File unfiltered_vcf
       File unfiltered_vcf_idx
       String output_name
+      String output_stats_name
       Boolean compress
       File? mutect_stats
       File? artifact_priors_tar_gz
@@ -822,7 +830,7 @@ task Filter {
             ~{"--tumor-segmentation " + maf_segments} \
             ~{"--ob-priors " + artifact_priors_tar_gz} \
             ~{"-stats " + mutect_stats} \
-            --filtering-stats filtering.stats \
+            --filtering-stats ~{output_stats_name}-filtering.stats \
             ~{m2_extra_filtering_args}
     }
 
@@ -839,7 +847,7 @@ task Filter {
     output {
         File filtered_vcf = "~{output_vcf}"
         File filtered_vcf_idx = "~{output_vcf_idx}"
-        File filtering_stats = "filtering.stats"
+        File filtering_stats = "~{output_stats_name}-filtering.stats"
     }
 }
 
