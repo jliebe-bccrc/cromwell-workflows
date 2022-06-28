@@ -71,37 +71,40 @@ workflow CleanPDX {
     input:
       input_bam = FilterReads.output_bam,
       output_fastq_basename = sample_ID + ".sorted.hgonly",
+      output_fastq_basename2 = sample_ID + ".2.sorted.hgonly",
       preemptible_tries = preemptible_tries,
       gotc_docker = gotc_docker
   }
 
 
+  scatter (output_fastq in ExtractHgReads.output_fastqs) 
+  {
+    String output_basename = basename(output_fastq)
+
     # Convert final FASTQ to uBAM
     call FastqToSam {
       input:
-        input_fastq = ExtractHgReads.output_fastq,
-        unsorted_bam_basename = sample_ID + ".unsorted.unmapped.bam",
+        input_fastq = output_fastq,
+        unsorted_bam_basename = output_basename + ".unsorted.unmapped.bam",
         sample_ID = sample_ID,
         compression_level = compression_level,
         preemptible_tries = preemptible_tries,
         gotc_docker = gotc_docker
-      }
-
+    }
 
     # Sort the uBAM
     call SortSam {
       input:
         input_bam = FastqToSam.output_bam,
-        sorted_bam_name = sample_ID + ".unmapped",
+        sorted_bam_basename = output_basename + ".unmapped",
         compression_level = compression_level,
         preemptible_tries = preemptible_tries,
         gotc_docker = gotc_docker
     }
-  
-  
+  }
 
   output {
-    File output_bam = FastqToSam.output_bam
+    Array[File] output_bams = SortSam.sorted_bam
   }
 }
 
@@ -283,7 +286,7 @@ task ExtractHgReads {
   input {
     File input_bam
     String output_fastq_basename
-    String output_fastq_basename_2
+    String output_fastq_basename2
     
     Int preemptible_tries
     
@@ -296,9 +299,13 @@ task ExtractHgReads {
   command <<<
   set -o pipefail
   set -e
-  samtools fastq ~{input_bam} > ~{output_fastq_basename}.fastq.gz
+  java -Xms4000m -jar /usr/gitc/picard.jar \
+  SortSam \
+  INPUT=~{input_bam} \
+  OUTPUT=/dev/stdout \
+  SORT_ORDER="queryname" \ |
+  samtools fastq -1 ~{output_fastq_basename}.fastq.gz -2 ~{output_fastq_basename2}.fastq.gz -0 /dev/null -s /dev/null -n /dev/stdin
   >>>
-
 
   runtime {
     docker: gotc_docker
@@ -310,7 +317,7 @@ task ExtractHgReads {
   }
 
   output {
-    File output_fastq = ~{output_fastq_basename}.fastq.gz
+    Array[File] output_fastqs = glob("*.fastq.gz")
   }
 }
 
@@ -334,7 +341,7 @@ task FastqToSam {
     java -Xms4000m -jar /usr/gitc/picard.jar \
     FastqToSam \
     F1=~{input_fastq} \
-    O=~{sorted_bam_basename} \
+    O=~{unsorted_bam_basename} \
     SM=~{sample_ID} \
     SORT_ORDER=queryname
   >>>
@@ -355,7 +362,7 @@ task FastqToSam {
 task SortSam {
   input {
     File input_bam
-    String sorted_bam_name
+    String sorted_bam_basename
 
     Int preemptible_tries
     Int compression_level
@@ -370,7 +377,7 @@ task SortSam {
     java -Xms4000m -jar /usr/gitc/picard.jar \
     SortSam \
     INPUT=~{input_bam} \
-    OUTPUT=~{sorted_bam_name}.bam \
+    OUTPUT=~{sorted_bam_basename}.bam \
     SORT_ORDER="queryname" \
     CREATE_INDEX=true \
     CREATE_MD5_FILE=true \
@@ -386,6 +393,6 @@ task SortSam {
   }
 
   output {
-    File sorted_bam = "~{sorted_bam_name}.bam"
+    File sorted_bam = "~{sorted_bam_basename}.bam"
   }
 }
