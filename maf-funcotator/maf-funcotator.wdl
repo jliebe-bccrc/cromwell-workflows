@@ -30,6 +30,9 @@
 # this logic *must* go into each task.  Therefore, there is a lot of duplicated code.  This allows users to specify a jar file
 # independent of what is in the docker file.  See the README.md for more info.
 #
+# Updated by Aparicio Lab (BC Cancer Research Centre) June 2022 to optimize runtime 
+# parameters for Cromwell on Azure implementation (instead of Google Cloud).
+
 workflow MafFuncotator {
     String gatk_docker
     File ref_fasta
