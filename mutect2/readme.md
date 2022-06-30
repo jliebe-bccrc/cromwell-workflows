@@ -3,6 +3,8 @@ Workflow for somatic variant calling.
 
 Source GATK version of this workflow can be found at the [GATK GitHub repository](https://github.com/broadinstitute/gatk/tree/master/scripts/mutect2_wdl) for mutect2 workflows.
 
+---
+
 **mutect2.inputs.json:** 
 
 * Replace "Mutect2.normal_reads" with the filepath to the BAM file containing matched normal reads (associated with the tumor reads).
@@ -24,3 +26,8 @@ Source GATK version of this workflow can be found at the [GATK GitHub repository
 **mutect2.wdl:**
 
 * No changes necessary.
+
+---
+
+### Expected Running Time
+* For a 85GB normal and a 143GB tumor input, mutect2 will take ~6.5 hours to finish.
