@@ -1,0 +1,21 @@
+{
+  "MafFuncotator.variant_vcf_to_funcotate": "/filepath/to/variant_vcf_to_funcotate.vcf",
+  "MafFuncotator.variant_vcf_to_funcotate_index": "/filepath/to/variant_vcf_to_funcotate.vcf.idx",
+  "MafFuncotator.sample_ID": "sample_ID",
+
+  "MafFuncotator.gatk_docker": "broadinstitute/gatk:4.1.3.0",
+
+  "MafFuncotator.ref_fasta": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "MafFuncotator.ref_fasta_index": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
+  "MafFuncotator.ref_dict": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.dict",
+
+  "MafFuncotator.reference_version": "hg38",
+  "MafFuncotator.output_format": "MAF",
+
+  "MafFuncotator.compress": "false",
+  "MafFuncotator.use_gnomad": "false",
+  "MafFuncotator.data_sources_tar_gz": "/filepath/to/funcotator_dataSources.20220608s.tar.gz",
+
+  "MafFuncotator.transcript_selection_list": "/datasettestinputs/dataset/gatk4-somatic-snvs-indels/funcotator/transcriptList.exact_uniprot_matches.AKT1_CRLF2_FGFR1.txt",
+  "MafFuncotator.filter_funcotations": "true"
+}
