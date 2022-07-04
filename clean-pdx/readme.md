@@ -17,6 +17,14 @@ This workflow was developed from scratch, using components of other existing wor
 
 * Replace "sample_ID" with the sample ID of the BAM file you want to clean.
 
+* Replace "sample_RGID" with one of the ID's (choose one if there are multiple) listed in the input BAM's header @RG line.
+
+* Replace "sample_PU" with one of the PU's (choose one if there are multiple) listed in the input BAM's header @RG line.
+
+* Replace "sample_SM" with the SM value (should only be one) listed in the input BAM's header @RG line.
+
+* Replace "sample_PL" with the PL value (should only be one) listed in the input BAM's header @RG line using all caps; for example, "ILLUMINA".
+
 **clean-pdx.trigger.json:**
 
 * Replace "WorkflowUrl" with the URL to either a local version of the WDL (in an Azure Storage Account), or the URL to the version available in this repository online.
