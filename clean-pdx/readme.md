@@ -9,6 +9,10 @@ This workflow was developed from scratch, using components of other existing wor
 
 * SortBwaBam/SortSam: see BAM to uBAM workflow's SortSam task
 
+CleanPDX follows the steps outlined below:
+
+<p align="center"><img src="https://user-images.githubusercontent.com/107152811/177386564-80778d6f-34d2-4e6a-9a44-d82c17f3b266.png" width="300"></p>
+
 ---
 
 **clean-pdx.inputs.json:** 
