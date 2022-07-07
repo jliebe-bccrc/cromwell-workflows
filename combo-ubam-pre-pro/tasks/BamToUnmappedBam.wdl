@@ -33,7 +33,7 @@ workflow BamToUnmappedBams {
   input {
     File input_bam
 
-    Int preemptible_tries
+    Int preemptible_tries = 2
 
     Int additional_disk_size = 20
     String gatk_docker = "broadinstitute/gatk:latest"
