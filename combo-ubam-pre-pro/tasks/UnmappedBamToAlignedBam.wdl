@@ -22,44 +22,21 @@ import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/c
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/Utilities.wdl" as Utils
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/Qc.wdl" as QC
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/SplitLargeReadGroup.wdl" as SplitRG 
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/GermlineStructs.wdl" as Structs
 
 
 # WORKFLOW DEFINITION
 workflow UnmappedBamToAlignedBam {
 
   input {
-    String sample_name
-    String base_file_name
+    SampleInfo sample_info
     Array[File] unmapped_bams
-    String final_gvcf_base_name
-    String unmapped_bam_suffix
+    GermlineSingleSampleReferences references
+    PapiSettings papi_settings
 
-    File fingerprint_genotypes_file
-    File fingerprint_genotypes_index
     File contamination_sites_ud
     File contamination_sites_bed
     File contamination_sites_mu
-    File calling_interval_list
-    Int haplotype_scatter_count
-    Int break_bands_at_multiples_of
-
-    File ref_dict
-    File ref_fasta
-    File ref_fasta_index
-    File ref_alt
-    File ref_sa
-    File ref_amb
-    File ref_bwt
-    File ref_ann
-    File ref_pac
-
-    File dbsnp_vcf
-    File dbsnp_vcf_index
-    Array[File] known_indels_sites_vcfs
-    Array[File] known_indels_sites_indices
-
-    Int preemptible_tries
-    Int agg_preemptible_tries
 
     String cross_check_fingerprints_by
     File? haplotype_database_file
