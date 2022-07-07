@@ -35,9 +35,12 @@ version 1.0
 ## converting unmapped BAM files (uBAMs) into analysis-ready BAM files, that can be
 ## used in later analysis (ex., somatic variant calling); and renaming the workflow to "PreProcessing".
 
+
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/BamToUnmappedBam.wdl" as ToUbam
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/BamToCram.wdl" as ToCram
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/GermlineStructs.wdl"
+
 
 # WORKFLOW DEFINITION
 workflow UbamAndPreProcessing {
@@ -45,7 +48,7 @@ workflow UbamAndPreProcessing {
   String pipeline_version = "1.4"
 
   input {
-    SampleAndUnmappedBams sample_and_unmapped_bams
+    SampleInfo sample_info
     File input_bam
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
