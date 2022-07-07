@@ -35,11 +35,12 @@ version 1.0
 ## converting unmapped BAM files (uBAMs) into analysis-ready BAM files, that can be
 ## used in later analysis (ex., somatic variant calling); and renaming the workflow to "PreProcessing".
 
-import "https://coaf3b65459446be3.blob.core.windows.net/workflow-templates/ubam-and-pre-pro/tasks/BamToUnmappedBam.wdl" as ToUbam
-import "https://coaf3b65459446be3.blob.core.windows.net/workflow-templates/ubam-and-pre-pro/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/BamToUnmappedBam.wdl" as ToUbam
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/BamToCram.wdl" as ToCram
 
 # WORKFLOW DEFINITION
-workflow PreProcessing {
+workflow UbamAndPreProcessing {
 
   String pipeline_version = "1.4"
 
@@ -63,7 +64,7 @@ workflow PreProcessing {
 
   call ToUbam.BamToUnmappedBams {
     input:
-      input_bam             = input_bam
+      input_bam             = input_bam,
       sample_info           = sample_info,
       papi_settings         = papi_settings
   }
@@ -88,6 +89,18 @@ workflow PreProcessing {
     if (provide_bam_output) {
     File provided_output_bam = UnmappedBamToAlignedBam.output_bam
     File provided_output_bam_index = UnmappedBamToAlignedBam.output_bam_index
+  }
+
+  call ToCram.BamToCram {
+    input:
+      input_bam = UnmappedBamToAlignedBam.output_bam,
+      ref_fasta = references.reference_fasta.ref_fasta,
+      ref_fasta_index = references.reference_fasta.ref_fasta_index,
+      ref_dict = references.reference_fasta.ref_dict,
+      duplication_metrics = UnmappedBamToAlignedBam.duplicate_metrics,
+      chimerism_metrics = AggregatedBamQC.agg_alignment_summary_metrics,
+      base_file_name = sample_and_unmapped_bams.base_file_name,
+      agg_preemptible_tries = papi_settings.agg_preemptible_tries
   }
 
   # Outputs that will be retained when execution is complete
