@@ -1,6 +1,6 @@
 version 1.0
 
-struct SampleAndUnmappedBams {
+struct SampleInfo {
   String base_file_name
   String final_gvcf_base_name
   String sample_name
