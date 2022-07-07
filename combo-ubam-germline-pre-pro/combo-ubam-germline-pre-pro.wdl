@@ -42,7 +42,7 @@ import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/c
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/AggregatedBamQC" as AggregatedQC
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/Qc" as QC
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/VariantCalling" as ToGvcf
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/GermlineStructs.wdl"
 
 
 # WORKFLOW DEFINITION
