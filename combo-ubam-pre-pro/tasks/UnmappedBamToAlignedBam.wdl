@@ -17,11 +17,11 @@ version 1.0
 ## licensing information pertaining to the included programs.
 
 
-import "" as Alignment
-import "" as Processing
-import "" as Utils
-import "" as QC
-import "" as SplitRG
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/Alignment.wdl" as Alignment
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/BamProcessing.wdl" as Processing
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/SplitLargeReadGroup.wdl" as SplitRG
 
 
 # WORKFLOW DEFINITION
