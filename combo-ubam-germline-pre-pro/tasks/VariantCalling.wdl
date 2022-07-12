@@ -28,7 +28,7 @@ workflow VariantCalling {
     String base_file_name
     String final_vcf_base_name
     Int agg_preemptible_tries
-    Boolean make_gvcf = true
+    Boolean make_gvcf = false
     Boolean make_bamout = false
     Boolean use_gatk3_haplotype_caller = false
   }
