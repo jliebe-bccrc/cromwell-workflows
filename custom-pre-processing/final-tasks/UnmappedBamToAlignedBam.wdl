@@ -32,8 +32,8 @@ workflow UnmappedBamToAlignedBam {
     SampleInfo sample_info
     File input_bam
     File input_bam_index
-    Array[String] sequence_grouping
-    Array[String] sequence_grouping_with_unmapped
+    String sequence_grouping
+    String sequence_grouping_with_unmapped
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
 
