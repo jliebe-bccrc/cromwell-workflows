@@ -145,9 +145,6 @@ workflow UnmappedBamToAlignedBam {
 
     File? cross_check_fingerprints_metrics = CrossCheckFingerprints.cross_check_fingerprints_metrics
 
-    File selfSM = CheckContamination.selfSM
-    Float contamination = CheckContamination.contamination
-
     File output_bqsr_reports = GatherBqsrReports.output_bqsr_report
 
     File output_bam = GatherBamFiles.output_bam
