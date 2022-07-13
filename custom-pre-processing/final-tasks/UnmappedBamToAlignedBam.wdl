@@ -17,12 +17,12 @@ version 1.0
 ## licensing information pertaining to the included programs.
 
 
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-pro/final-tasks/Alignment.wdl" as Alignment
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-pro/final-tasks/BamProcessing.wdl" as Processing
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-pro/final-tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-pro/final-tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-pro/final-tasks/SplitLargeReadGroup.wdl" as SplitRG 
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-pro/final-tasks/GermlineStructs.wdl" as Structs
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-processing/final-tasks/Alignment.wdl" as Alignment
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-processing/final-tasks/BamProcessing.wdl" as Processing
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-processing/final-tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-processing/final-tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-processing/final-tasks/SplitLargeReadGroup.wdl" as SplitRG 
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/custom-pre-processing/final-tasks/GermlineStructs.wdl" as Structs
 
 
 # WORKFLOW DEFINITION
