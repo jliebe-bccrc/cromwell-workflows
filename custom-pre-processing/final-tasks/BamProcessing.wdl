@@ -213,7 +213,7 @@ task BaseRecalibrator {
     File input_bam
     File input_bam_index
     String recalibration_report_filename
-    Array[String] sequence_group_interval
+    String sequence_group_interval
     File dbsnp_vcf
     File dbsnp_vcf_index
     Array[File] known_indels_sites_vcfs
