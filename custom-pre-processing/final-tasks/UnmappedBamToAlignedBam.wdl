@@ -58,9 +58,9 @@ workflow UnmappedBamToAlignedBam {
   # We need disk to localize the sharded input and output due to the scatter for BQSR.
   # If we take the number we are scattering by and reduce by 3 we will have enough disk space
   # to account for the fact that the data is not split evenly.
-  Int num_of_bqsr_scatters = length(sequence_grouping)
-  Int potential_bqsr_divisor = num_of_bqsr_scatters - 10
-  Int bqsr_divisor = if potential_bqsr_divisor > 1 then potential_bqsr_divisor else 1
+  # Int num_of_bqsr_scatters = length(sequence_grouping)
+  # Int potential_bqsr_divisor = num_of_bqsr_scatters - 10
+  # Int bqsr_divisor = if potential_bqsr_divisor > 1 then potential_bqsr_divisor else 1
 
   # Perform Base Quality Score Recalibration (BQSR) on the sorted BAM in parallel
   scatter (subgroup in sequence_grouping) {
@@ -78,7 +78,6 @@ workflow UnmappedBamToAlignedBam {
         ref_dict = references.reference_fasta.ref_dict,
         ref_fasta = references.reference_fasta.ref_fasta,
         ref_fasta_index = references.reference_fasta.ref_fasta_index,
-        bqsr_scatter = bqsr_divisor,
         preemptible_tries = papi_settings.agg_preemptible_tries
     }
   }
@@ -104,7 +103,6 @@ workflow UnmappedBamToAlignedBam {
         ref_dict = references.reference_fasta.ref_dict,
         ref_fasta = references.reference_fasta.ref_fasta,
         ref_fasta_index = references.reference_fasta.ref_fasta_index,
-        bqsr_scatter = bqsr_divisor,
         compression_level = compression_level,
         preemptible_tries = papi_settings.agg_preemptible_tries
     }
