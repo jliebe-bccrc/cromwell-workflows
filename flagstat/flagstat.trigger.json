@@ -1,6 +1,0 @@
-{
-  "WorkflowUrl": "https://url/to/flagstat.wdl",
-  "WorkflowInputsUrl": "https://url/to/flagstat.inputs.json",
-  "WorkflowOptionsUrl": null,
-  "WorkflowDependenciesUrl": null
-}
