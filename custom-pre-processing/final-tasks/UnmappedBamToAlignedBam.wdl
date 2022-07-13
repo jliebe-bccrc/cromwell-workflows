@@ -33,6 +33,7 @@ workflow UnmappedBamToAlignedBam {
     File input_bam
     File input_bam_index
     File sequence_grouping
+    File sequence_grouping_with_unmapped
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
 
@@ -49,6 +50,8 @@ workflow UnmappedBamToAlignedBam {
   Float cutoff_for_large_rg_in_gb = 20.0
 
   String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
+
+  Float agg_bam_size = size(input_bam, "GB")
 
   Int compression_level = 2
 
@@ -89,7 +92,7 @@ workflow UnmappedBamToAlignedBam {
       preemptible_tries = papi_settings.preemptible_tries
   }
 
-  scatter (subgroup in CreateSequenceGroupingTSV.sequence_grouping_with_unmapped) {
+  scatter (subgroup in sequence_grouping_with_unmapped) {
     # Apply the recalibration model by interval
     call Processing.ApplyBQSR as ApplyBQSR {
       input:
