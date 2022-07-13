@@ -221,7 +221,6 @@ task BaseRecalibrator {
     File ref_dict
     File ref_fasta
     File ref_fasta_index
-    Int bqsr_scatter
     Int preemptible_tries
     String gatk_docker = "us.gcr.io/broad-gatk/gatk:4.0.10.1"
   }
@@ -273,7 +272,6 @@ task ApplyBQSR {
     File ref_fasta
     File ref_fasta_index
     Int compression_level
-    Int bqsr_scatter
     Int preemptible_tries
     String gatk_docker = "us.gcr.io/broad-gatk/gatk:4.0.10.1"
     Int memory_multiplier = 1
