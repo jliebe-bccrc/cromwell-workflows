@@ -112,7 +112,7 @@ task SamToFastqAndBwaMemAndMba {
 	>>>
 
 	runtime {
-	  docker: gotc_docker
+	  docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
 	  preemptible: true
 	  maxRetries: preemptible_tries
 	  memory: "14 GB"
