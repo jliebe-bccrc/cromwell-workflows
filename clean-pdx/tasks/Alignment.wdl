@@ -59,8 +59,6 @@ task SamToFastqAndBwaMemAndMba {
 
       Int compression_level
       Int preemptible_tries
-
-      String gotc_docker
 	}
 
     Float unmapped_bam_size = size(input_bam, "GB")
