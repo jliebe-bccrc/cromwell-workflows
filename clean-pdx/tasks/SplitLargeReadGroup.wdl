@@ -57,7 +57,7 @@ workflow SplitLargeReadGroup {
         input_bam = unmapped_bam,
         bwa_commandline = bwa_commandline,
         output_bam_basename = current_name,
-        reference_fasta = mouse_human_genome_fasta,
+        mouse_human_genome_fasta = mouse_human_genome_fasta,
         mouse_human_genome_fasta_index = mouse_human_genome_fasta_index,
         mouse_human_genome_dict = mouse_human_genome_dict,
         mouse_human_genome_sa = mouse_human_genome_sa, 
