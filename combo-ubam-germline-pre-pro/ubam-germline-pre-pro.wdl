@@ -27,26 +27,26 @@ version 1.0
 ## licensing information pertaining to the included programs.
 ## 
 ## UPDATE NOTES :
-## Updated by Aparicio Lab (BC Cancer Research Centre) May 2022.
+## Updated by the Aparicio Lab (BC Cancer Research Centre) May/June 2022.
 ##
 ## This pipeline has been modified from its original, which can be found at 
-## https://github.com/microsoft/gatk4-genome-processing-pipeline-azure. Major changes include
-## removing all germline SNP/indel calling functionality; pipeline is now just used for
-## converting unmapped BAM files (uBAMs) into analysis-ready BAM files, that can be
-## used in later analysis (ex., somatic variant calling); and renaming the workflow to "PreProcessing".
+## https://github.com/microsoft/gatk4-genome-processing-pipeline-azure. Major changes 
+## include adding BAM to uBAM conversion and flagstat tasks; changing the default pipeline
+## settings to output a VCF instead of a gVCF file; and renaming the workflow to 
+## "UbamGermlinePrePro".
 
 
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/BamToUnmappedBam.wdl" as ToUbam
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/BamToCram.wdl" as ToCram
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/AggregatedBamQC" as AggregatedQC
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/Qc" as QC
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/VariantCalling" as ToGvcf
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/AggregatedBamQC.wdl" as AggregatedQC
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/VariantCalling.wdl" as ToGvcf
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/GermlineStructs.wdl"
 
 
 # WORKFLOW DEFINITION
-workflow UbamAndGermlinePreProcessing {
+workflow UbamGermlinePrePro {
 
   String pipeline_version = "1.4"
 
@@ -165,6 +165,11 @@ workflow UbamAndGermlinePreProcessing {
       use_gatk3_haplotype_caller = use_gatk3_haplotype_caller
   }
 
+  call Flagstat {
+    input_bam = UnmappedBamToAlignedBam.output_bam,
+    output_name = sample_info.base_file_name + ".flagstat.txt"
+  }
+
   if (provide_bam_output) {
     File provided_output_bam = UnmappedBamToAlignedBam.output_bam
     File provided_output_bam_index = UnmappedBamToAlignedBam.output_bam_index
@@ -214,6 +219,7 @@ workflow UbamAndGermlinePreProcessing {
 
     File wgs_metrics = CollectWgsMetrics.metrics
     File raw_wgs_metrics = CollectRawWgsMetrics.metrics
+    File flagstat_txt = Flagstat.flagstat_txt
 
     File duplicate_metrics = UnmappedBamToAlignedBam.duplicate_metrics
     File output_bqsr_reports = UnmappedBamToAlignedBam.output_bqsr_reports
@@ -232,5 +238,32 @@ workflow UbamAndGermlinePreProcessing {
 
     File output_vcf = BamToGvcf.output_vcf
     File output_vcf_index = BamToGvcf.output_vcf_index
+
+    File output_flagstat = Flagstat.output_file
+  }
+}
+
+
+task Flagstat {
+  input {
+    File input_bam
+    String output_name
+  }
+
+  Int disk = ceil(size(input_bam, "GB") * 2)
+    
+  command <<< 
+    samtools flagstat ~{input_bam} > ~{output_name}
+  >>>
+
+  runtime {
+    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    disk: disk + " GB"
+    cpu: 4
+    preemptible: true
+  }
+
+  output {
+    File output_file = "~{output_name}"
   }
 }
