@@ -27,13 +27,14 @@ version 1.0
 ## licensing information pertaining to the included programs.
 ## 
 ## UPDATE NOTES :
-## Updated by Aparicio Lab (BC Cancer Research Centre) May 2022.
+## Updated by Aparicio Lab (BC Cancer Research Centre) May/June 2022.
 ##
 ## This pipeline has been modified from its original, which can be found at 
 ## https://github.com/microsoft/gatk4-genome-processing-pipeline-azure. Major changes include
-## removing all germline SNP/indel calling functionality; pipeline is now just used for
-## converting unmapped BAM files (uBAMs) into analysis-ready BAM files, that can be
-## used in later analysis (ex., somatic variant calling); and renaming the workflow to "PreProcessing".
+## removing all germline SNP/indel calling and adding BAM to uBAM functionality; pipeline is now
+## used for converting unmapped BAM files (uBAMs) into analysis-ready BAM files, that can be
+## used in later analysis (ex., somatic variant calling); calling samtools flagstat on the analysis-
+## ready BAMs; producing CRAM outputs for later storage; and renaming the workflow to "UbamPrePro".
 
 
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/BamToUnmappedBam.wdl" as ToUbam
@@ -43,7 +44,7 @@ import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/c
 
 
 # WORKFLOW DEFINITION
-workflow UbamAndPreProcessing {
+workflow UbamPrePro {
 
   String pipeline_version = "1.4"
 
@@ -63,13 +64,11 @@ workflow UbamAndPreProcessing {
   Int read_length = 250
   Float lod_threshold = -20.0
   String cross_check_fingerprints_by = "READGROUP"
-  String recalibrated_bam_basename = sample_and_unmapped_bams.base_file_name + ".aligned.duplicates_marked.recalibrated"
+  String recalibrated_bam_basename = sample_info.base_file_name + ".aligned.duplicates_marked.recalibrated"
 
   call ToUbam.BamToUnmappedBams {
     input:
-      input_bam             = input_bam,
-      sample_info           = sample_info,
-      papi_settings         = papi_settings
+      input_bam             = input_bam
   }
 
   call ToBam.UnmappedBamToAlignedBam {
@@ -100,10 +99,14 @@ workflow UbamAndPreProcessing {
       ref_fasta = references.reference_fasta.ref_fasta,
       ref_fasta_index = references.reference_fasta.ref_fasta_index,
       ref_dict = references.reference_fasta.ref_dict,
-      duplication_metrics = UnmappedBamToAlignedBam.duplicate_metrics,
-      chimerism_metrics = AggregatedBamQC.agg_alignment_summary_metrics,
-      base_file_name = sample_and_unmapped_bams.base_file_name,
+      base_file_name = sample_info.base_file_name,
       agg_preemptible_tries = papi_settings.agg_preemptible_tries
+  }
+
+  call Flagstat {
+    input:
+      input_bam = UnmappedBamToAlignedBam.output_bam,
+      output_name = sample_info.base_file_name + ".flagstat.txt"
   }
 
   # Outputs that will be retained when execution is complete
@@ -116,5 +119,34 @@ workflow UbamAndPreProcessing {
     File? output_bam = provided_output_bam
     File? output_bam_index = provided_output_bam_index
 
+    File output_cram = provided_output_cram
+    File output_cram_index = provided_output_cram_index
+    
+    File output_flagstat = Flagstat.output_file
+  }
+}
+
+
+task Flagstat {
+  input {
+    File input_bam
+    String output_name
+  }
+
+  Int disk = ceil(size(input_bam, "GB") * 2)
+    
+  command <<< 
+    samtools flagstat ~{input_bam} > ~{output_name}
+  >>>
+
+  runtime {
+    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    disk: disk + " GB"
+    cpu: 4
+    preemptible: true
+  }
+
+  output {
+    File output_file = "~{output_name}"
   }
 }
