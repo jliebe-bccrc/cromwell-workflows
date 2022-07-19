@@ -3,6 +3,8 @@ Workflow for funcotating an input VCF file and outputting in MAF format (VCF to 
 
 Source GATK version of this workflow can be found at the [GATK GitHub repository](https://github.com/broadinstitute/gatk/tree/master/scripts/funcotator_wdl) for the Funcotator workflow.
 
+NOTE: The mutect2 pipeline provided in this repository has been modified from its original to output both VCF and MAF-funcotated files, instead of one or the other. Therefore, if using this repository's mutect2 workflow, maf-functotator will not need to be run.
+
 ---
 
 **maf-funcotator.inputs.json:** 
