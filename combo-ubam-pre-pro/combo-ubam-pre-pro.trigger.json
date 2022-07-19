@@ -1,6 +1,0 @@
-{
-  "WorkflowUrl": "https://url/to/combo-ubam-pre-pro.wdl",
-  "WorkflowInputsUrl": "https://url/to/combo-ubam-pre-pro.inputs.json",
-  "WorkflowOptionsUrl": null,
-  "WorkflowDependenciesUrl": null
-}
