@@ -11,14 +11,14 @@ Pre-processing follows the steps shown in the image below:
 
 ---
 
-**custom-pre-processing.hg38.wgs.inputs.json:** 
+**custom-pre-pro.inputs.json:** 
 
 * Replace "base_file_name" with the sample ID of the sample you want to pre-process.
 * Do NOT change "sample_name"; that is a required reference.
 * Replace "flowcell_unmapped_bams" with a list of filepaths to unmapped BAMs (outputs of bam-to-unmapped-bam workflow), one per line, with a comma between every filepath. Make sure they are all from the same sample - they should all have the same sample ID.
 * Replace "final_gvcf_base_name" with the same sample ID as used in the "base_file_name" line.
 
-**custom-pre-processing.trigger.json:**
+**custom-pre-pro.trigger.json:**
 
 * Replace "WorkflowUrl" with the URL to either a local version of the WDL (in an Azure Storage Account), or the URL to the version available in this repository online.
 
@@ -26,7 +26,7 @@ Pre-processing follows the steps shown in the image below:
 
 * Optional: Replace "WorkflowOptionsUrl" and/or "WorkflowDependenciesUrl" with the URL to a local version of the options.json and/or dependencies.json files, respectively.
 
-**custom-pre-processing.wdl:**
+**custom-pre-pro.wdl:**
 
 * No changes necessary.
 
