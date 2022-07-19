@@ -1,14 +1,14 @@
 {
-  "UbamAndGermlinePreProcessing.sample_and_unmapped_bams": {
+  "UbamGermlinePrePro.sample_info": {
     "sample_name": "NA12878",
     "base_file_name": "sample_ID",
     "final_gvcf_base_name": "sample_ID",
     "unmapped_bam_suffix": ".bam"
   },
 
-  "UbamAndGermlinePreProcessing.input_bam": "/filepath/to/input.bam",
+  "UbamGermlinePrePro.input_bam": "/filepath/to/input.bam",
 
-  "UbamAndPreProcessing.references": {
+  "UbamGermlinePrePro.references": {
     "fingerprint_genotypes_file": "/datasettestinputs/dataset/gatk4-genome-processing-pipeline/dsde-data-na12878-public/NA12878.hg38.reference.fingerprint.vcf",
     "fingerprint_genotypes_index": "/datasettestinputs/dataset/gatk4-genome-processing-pipeline/dsde-data-na12878-public/NA12878.hg38.reference.fingerprint.vcf.idx",
     "contamination_sites_ud": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.contam.UD",
@@ -41,10 +41,10 @@
     "evaluation_interval_list": "/datasettestinputs/dataset/references/hg38/v0/wgs_evaluation_regions.hg38.interval_list"
   },
 
-  "UbamAndGermlinePreProcessing.wgs_coverage_interval_list": "/datasettestinputs/dataset/references/hg38/v0/wgs_coverage_regions.hg38.interval_list",
-  "UbamAndGermlinePreProcessing.haplotype_database_file": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.haplotype_database.txt",
+  "UbamGermlinePrePro.wgs_coverage_interval_list": "/datasettestinputs/dataset/references/hg38/v0/wgs_coverage_regions.hg38.interval_list",
+  "UbamGermlinePrePro.haplotype_database_file": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.haplotype_database.txt",
 
-  "UbamAndGermlinePreProcessing.papi_settings": {
+  "UbamGermlinePrePro.papi_settings": {
     "preemptible_tries": 3,
     "agg_preemptible_tries": 3
   }
