@@ -1,5 +1,5 @@
 # Mutect2 Workflow
-Workflow for somatic variant calling.
+Workflow for somatic variant calling; outputs both VCF and MAF format funcotated files.
 
 Source GATK version of this workflow can be found at the [GATK GitHub repository](https://github.com/broadinstitute/gatk/tree/master/scripts/mutect2_wdl) for mutect2 workflows.
 
