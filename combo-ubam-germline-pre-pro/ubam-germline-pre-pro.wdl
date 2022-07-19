@@ -166,8 +166,9 @@ workflow UbamGermlinePrePro {
   }
 
   call Flagstat {
-    input_bam = UnmappedBamToAlignedBam.output_bam,
-    output_name = sample_info.base_file_name + ".flagstat.txt"
+    input:
+      input_bam = UnmappedBamToAlignedBam.output_bam,
+      output_name = sample_info.base_file_name + ".flagstat.txt"
   }
 
   if (provide_bam_output) {
