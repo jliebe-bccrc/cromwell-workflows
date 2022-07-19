@@ -220,7 +220,6 @@ workflow UbamGermlinePrePro {
 
     File wgs_metrics = CollectWgsMetrics.metrics
     File raw_wgs_metrics = CollectRawWgsMetrics.metrics
-    File flagstat_txt = Flagstat.flagstat_txt
 
     File duplicate_metrics = UnmappedBamToAlignedBam.duplicate_metrics
     File output_bqsr_reports = UnmappedBamToAlignedBam.output_bqsr_reports
