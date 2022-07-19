@@ -1,7 +1,7 @@
 # BamToCram Workflow
 Workflow for converting a BAM to a CRAM file.
 
-Source GATK version of this workflow can be found at the [Microsoft GATK4 Genome Processing GitHub repository](tps://github.com/microsoft/gatk4-genome-processing-pipeline-azure/blob/main-azure/tasks/BamToCram.wdl), under the "BamToCram/ConvertCram" task.
+Source GATK version of this workflow can be found at the [Microsoft GATK4 Genome Processing GitHub repository](https://github.com/microsoft/gatk4-genome-processing-pipeline-azure/blob/main-azure/tasks/BamToCram.wdl), under the "BamToCram/ConvertCram" task.
 
 ---
 
