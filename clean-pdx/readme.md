@@ -11,7 +11,7 @@ This workflow was developed from scratch, using components of other existing wor
 
 CleanPDX follows the steps outlined below:
 
-<p align="center"><img src="https://user-images.githubusercontent.com/107152811/177386564-80778d6f-34d2-4e6a-9a44-d82c17f3b266.png" width="300"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/107152811/179793142-b8d8eca9-5e2e-4cd6-810f-0e64365f87b0.png" width="300"></p>
 
 ---
 
