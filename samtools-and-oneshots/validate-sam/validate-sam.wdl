@@ -1,0 +1,95 @@
+version 1.0
+## Copyright Broad Institute, 2017 and Aparicio Lab (BCCRC), 2022
+## 
+## This WDL performs format validation on SAM/BAM files in a list
+##
+## Requirements/expectations :
+## - One or more SAM or BAM files to validate
+## - Explicit request of either SUMMARY or VERBOSE mode in inputs.json
+##
+## Outputs:
+## - Set of .txt files containing the validation reports, one per input file
+##
+## Cromwell version support 
+## - Successfully tested on v32
+## - Does not work on versions < v23 due to output syntax
+##
+## Runtime parameters are optimized for Broad's Google Cloud Platform implementation. 
+## For program versions, see docker containers. 
+##
+## LICENSING : 
+## This script is released under the WDL source code license (BSD-3) (see LICENSE in 
+## https://github.com/broadinstitute/wdl). Note however that the programs it calls may 
+## be subject to different licenses. Users are responsible for checking that they are
+## authorized to run all programs before running this script. Please see the docker 
+## page at https://hub.docker.com/r/broadinstitute/genomes-in-the-cloud/ for detailed
+## licensing information pertaining to the included programs.
+##
+## Updated by Aparicio Lab (BC Cancer Research Centre) July 2022 to optimize runtime 
+## parameters for Cromwell on Azure implementation (instead of Google Cloud).
+
+# WORKFLOW DEFINITION
+workflow ValidateSam {
+  input {
+    Array[File] bam_array 
+    String gatk_docker = "broadinstitute/gatk:latest"
+    String gatk_path = "/gatk/gatk"
+  }
+
+  # Process the input files in parallel
+  scatter (input_bam in bam_array) {
+
+    # Get the basename, i.e. strip the filepath and the extension
+    String bam_basename = basename(input_bam, ".bam")
+
+    # Run the validation 
+    call ValidateSamFile {
+      input:
+        input_bam = input_bam,
+        output_basename = bam_basename + ".validation",
+        docker = gatk_docker,
+        gatk_path = gatk_path
+    }
+  }
+
+  # Outputs that will be retained when execution is complete
+  output {
+    Array[File] validation_reports = ValidateSamFile.validation_report
+  }
+}
+
+# TASK DEFINITIONS
+
+# Validate a SAM or BAM using Picard ValidateSamFile
+task ValidateSamFile {
+  input {
+    File input_bam
+    String output_basename
+    String gatk_path
+  
+    String docker
+    Int machine_mem_gb = 4
+    Int addtional_disk_space_gb = 50
+  }
+    
+  Int disk_size = ceil(size(input_bam, "GB")) + addtional_disk_space_gb
+  String output_name = "${output_basename}_summary.txt"
+ 
+  command <<<
+    ~{gatk_path} \
+    ValidateSamFile \
+    INPUT=~{input_bam} \
+    OUTPUT=~{output_name} \
+    MODE=SUMMARY
+  >>>
+  
+  runtime {
+    docker: docker
+    memory: machine_mem_gb + " GB"
+    disk: disk_size + " GB"
+  }
+
+  output {
+    File validation_report = "${output_name}"
+  }
+}

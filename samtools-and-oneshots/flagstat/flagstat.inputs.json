@@ -1,0 +1,4 @@
+{
+  "Flagstat.input_bam": "/filepath/to/input.bam",
+  "Flagstat.sample_ID": "sample_ID"
+}

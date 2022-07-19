@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/validate-sam.wdl",
+  "WorkflowInputsUrl": "https://url/to/validate-sam.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}

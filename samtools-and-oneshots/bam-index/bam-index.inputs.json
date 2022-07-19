@@ -1,0 +1,4 @@
+{
+  "Index.input_bam": "/filepath/to/input.bam",
+  "Index.sample_ID": "sample_ID"
+}

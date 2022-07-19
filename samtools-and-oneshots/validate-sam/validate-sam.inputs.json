@@ -1,0 +1,6 @@
+{
+  "ValidateSam.bam_array": [
+    "/filepath/to/input_1.bam",
+    "/filepath/to/input_2.bam"
+  ]
+}
