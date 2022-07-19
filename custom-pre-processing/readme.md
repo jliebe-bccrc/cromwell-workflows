@@ -3,11 +3,12 @@ Workflow for pre-processing of samples before somatic or germline variant callin
 
 Takes an unmapped BAM file as input, and outputs analysis-ready BAM files. Based off of a pre-processing pipeline developed by Microsoft for pre-processing and germline variant calling, found in the [Microsoft GATK4 Genome Processing repository](https://github.com/microsoft/gatk4-genome-processing-pipeline-azure).
 
+Extra steps were added in for further sample processing, in order to improve efficiency and reduce the usage of extra individual pipelines; the two extra steps are a call to samtools flagstat and ConvertToCram, which was taken from Microsoft's pre-processing and germline variant calling pipeline (mentioned above).
+
 Pre-processing follows the steps shown in the image below:
 
 <p align="center"><img src="https://drive.google.com/uc?id=14lxMPZcatIP5xFboYO--t71_LdHBN0FU" width="250"></p>
 
-Extra steps were added in for further sample processing, in order to improve efficiency and reduce the usage of extra individual pipelines; the two extra steps are a call to samtools flagstat and ConvertToCram, which was taken from Microsoft's pre-processing and germline variant calling pipeline (mentioned above).
 ---
 
 **custom-pre-processing.hg38.wgs.inputs.json:** 
