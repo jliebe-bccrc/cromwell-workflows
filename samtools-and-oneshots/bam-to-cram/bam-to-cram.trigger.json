@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/bam-to-cram.wdl",
+  "WorkflowInputsUrl": "https://url/to/bam-to-cram.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}

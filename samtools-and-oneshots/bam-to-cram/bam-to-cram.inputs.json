@@ -1,0 +1,7 @@
+{
+  "BamToCram.input_bam": "/filepath/to/input.bam",
+  "BamToCram.sample_ID": "sample_ID",
+
+  "BamToCram.ref_fasta": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "BamToCram.ref_fasta_index": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.fasta.fai"
+}
