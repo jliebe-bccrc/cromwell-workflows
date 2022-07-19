@@ -1,6 +1,0 @@
-{
-  "WorkflowUrl": "https://url/to/maf-funcotator.wdl",
-  "WorkflowInputsUrl": "https://url/to/maf-funcotator.inputs.json",
-  "WorkflowOptionsUrl": null,
-  "WorkflowDependenciesUrl": null
-}
