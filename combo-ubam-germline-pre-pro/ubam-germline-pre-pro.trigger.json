@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/ubam-germline-pre-pro.wdl",
+  "WorkflowInputsUrl": "https://url/to/ubam-germline-pre-pro.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}
