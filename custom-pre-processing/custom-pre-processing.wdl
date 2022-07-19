@@ -1,6 +1,6 @@
 version 1.0
 
-## Copyright Broad Institute, 2018
+## Copyright Broad Institute, 2018 and Aparicio Lab (BCCRC), 2022
 ##
 ## This WDL pipeline implements data pre-processing according to the GATK Best Practices 
 ## (June 2016) for human whole-genome data.
@@ -25,7 +25,7 @@ version 1.0
 ## authorized to run all programs before running this script. Please see the docker
 ## page at https://hub.docker.com/r/broadinstitute/genomes-in-the-cloud/ for detailed
 ## licensing information pertaining to the included programs.
-##
+## 
 ## UPDATE NOTES :
 ## Updated by Aparicio Lab (BC Cancer Research Centre) May 2022.
 ##
@@ -34,8 +34,12 @@ version 1.0
 ## removing all germline SNP/indel calling functionality; pipeline is now just used for
 ## converting unmapped BAM files (uBAMs) into analysis-ready BAM files, that can be
 ## used in later analysis (ex., somatic variant calling); and renaming the workflow to "PreProcessing".
+## It also includes the call to BamToCram for generating CRAM output files, and a call to samtools flagstat 
+## for generating extra stats on the analysis-ready BAM.
 
 import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/az1.1.0/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/BamToCram.wdl" as ToCram
+
 
 # WORKFLOW DEFINITION
 workflow PreProcessing {
@@ -80,6 +84,22 @@ workflow PreProcessing {
     File provided_output_bam_index = UnmappedBamToAlignedBam.output_bam_index
   }
 
+  call ToCram.BamToCram {
+    input:
+      input_bam = UnmappedBamToAlignedBam.output_bam,
+      ref_fasta = references.reference_fasta.ref_fasta,
+      ref_fasta_index = references.reference_fasta.ref_fasta_index,
+      ref_dict = references.reference_fasta.ref_dict,
+      base_file_name = sample_and_unmapped_bams.base_file_name,
+      agg_preemptible_tries = papi_settings.agg_preemptible_tries
+  }
+
+  call Flagstat {
+    input:
+      input_bam = UnmappedBamToAlignedBam.output_bam,
+      output_name = sample_and_unmapped_bams.base_file_name + ".flagstat.txt"
+  }
+
   # Outputs that will be retained when execution is complete
   output {
     Array[File] quality_yield_metrics = UnmappedBamToAlignedBam.quality_yield_metrics
@@ -90,5 +110,34 @@ workflow PreProcessing {
     File? output_bam = provided_output_bam
     File? output_bam_index = provided_output_bam_index
 
+    File output_cram = BamToCram.output_cram
+    File output_cram_index = BamToCram.output_cram_index
+
+    File output_flagstat = Flagstat.output_file
+  }
+}
+
+
+task Flagstat {
+  input {
+    File input_bam
+    String output_name
+  }
+
+  Int disk = ceil(size(input_bam, "GB") * 2)
+    
+  command <<< 
+    samtools flagstat ~{input_bam} > ~{output_name}
+  >>>
+
+  runtime {
+    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    disk: disk + " GB"
+    cpu: 4
+    preemptible: true
+  }
+
+  output {
+    File output_file = "~{output_name}"
   }
 }
