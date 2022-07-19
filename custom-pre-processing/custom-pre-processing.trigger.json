@@ -1,6 +1,0 @@
-{
-  "WorkflowUrl": "https://url/to/custom-pre-processing.wdl",
-  "WorkflowInputsUrl": "https://url/to/custom-pre-processing.hg38.wgs.inputs.json",
-  "WorkflowOptionsUrl": null,
-  "WorkflowDependenciesUrl": null
-}
