@@ -95,8 +95,11 @@ task SamToFastqAndBwaMemAndMba {
       OUTPUT=~{output_bam_basename}.bam \
       REFERENCE_SEQUENCE=~{mouse_human_genome_fasta} \
       PAIRED_RUN=true \
+      SORT_ORDER="unsorted" \
+      ALIGNED_READS_ONLY=false \
       CLIP_ADAPTERS=false \
       MAX_RECORDS_IN_RAM=2000000 \
+      ADD_MATE_CIGAR=true \
       MAX_INSERTIONS_OR_DELETIONS=-1 \
       PRIMARY_ALIGNMENT_STRATEGY=MostDistant \
       PROGRAM_RECORD_ID="bwamem" \
