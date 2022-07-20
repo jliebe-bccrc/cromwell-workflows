@@ -1,0 +1,4 @@
+{
+  "ConvertFastqToUbam.fastq": "filepath/to/input.fastq",
+  "ConvertFastqToUbam.sample_ID": "sample_ID"
+}

@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/fastq-to-ubam.wdl",
+  "WorkflowInputsUrl": "https://url/to/fastq-to-ubam.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}
