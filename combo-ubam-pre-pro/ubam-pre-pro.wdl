@@ -119,8 +119,8 @@ workflow UbamPrePro {
     File? output_bam = provided_output_bam
     File? output_bam_index = provided_output_bam_index
 
-    File output_cram = provided_output_cram
-    File output_cram_index = provided_output_cram_index
+    File output_cram = BamToCram.output_cram
+    File output_cram_index = BamToCram.output_cram_index
     
     File output_flagstat = Flagstat.output_file
   }
