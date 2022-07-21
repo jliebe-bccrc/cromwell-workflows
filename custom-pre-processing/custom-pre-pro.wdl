@@ -112,6 +112,7 @@ workflow PreProcessing {
 
     File output_cram = BamToCram.output_cram
     File output_cram_index = BamToCram.output_cram_index
+    File output_cram_md5 = BamToCram.output_cram_md5
 
     File output_flagstat = Flagstat.output_file
   }
