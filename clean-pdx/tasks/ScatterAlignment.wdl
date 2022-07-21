@@ -82,7 +82,8 @@ task SamToFastqAndBwaMem {
       INTERLEAVE=true \
       VALIDATION_STRINGENCY=LENIENT \
       NON_PF=true | \
-      /usr/gitc/~{bwa_commandline} /dev/stdin - 2> >(tee ~{output_bam_basename}.bwa.stderr.log >&2)
+      /usr/gitc/~{bwa_commandline} /dev/stdin - 2> >(tee ~{output_bam_basename}.bwa.stderr.log >&2) | \
+      samtools view -1 - > ~{output_bam_basename}.bam
 	>>>
 
 	runtime {
