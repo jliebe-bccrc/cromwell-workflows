@@ -13,16 +13,23 @@ task SamSplitter {
   Float disk_multiplier = 2.5
   Int disk_size = ceil(disk_multiplier * unmapped_bam_size + 20)
 
+  #command <<<
+  #  set -e
+  #  mkdir output_dir
+  #  total_reads=$(samtools view -c ~{input_bam})
+  #  java -Dsamjdk.compression_level=~{compression_level} -Xms3000m -jar /usr/gitc/picard.jar SplitSamByNumberOfReads \
+  #  INPUT=~{input_bam} \
+  #  OUTPUT=output_dir \
+  #  SPLIT_TO_N_READS=~{n_reads} \
+  #  TOTAL_READS_IN_INPUT=$total_reads
+  #>>>
+
   command <<<
+    set -o pipefail
     set -e
-    mkdir output_dir
-    total_reads=$(samtools view -c ~{input_bam})
-    java -Dsamjdk.compression_level=~{compression_level} -Xms3000m -jar /usr/gitc/picard.jar SplitSamByNumberOfReads \
-    INPUT=~{input_bam} \
-    OUTPUT=output_dir \
-    SPLIT_TO_N_READS=~{n_reads} \
-    TOTAL_READS_IN_INPUT=$total_reads
+    samtools split -u /dev/null -v ~{input_bam} > output_dir
   >>>
+
 
   output {
     Array[File] split_bams = glob("output_dir/*.bam")
