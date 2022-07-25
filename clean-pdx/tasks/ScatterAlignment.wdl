@@ -27,7 +27,7 @@ task SamSplitter {
   command <<<
     set -o pipefail
     set -e
-    samtools split -u /dev/null -v ~{input_bam} > output_dir
+    samtools split -u /dev/null -v ~{input_bam}
   >>>
 
 
