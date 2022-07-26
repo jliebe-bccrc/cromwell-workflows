@@ -40,21 +40,22 @@ workflow SplitLargeReadGroup {
     Int reads_per_file = 48000000
   }
 
-  call Alignment.SamSplitter as SamSplitter {
-    input :
-      input_bam = input_bam,
-      n_reads = reads_per_file,
-      preemptible_tries = preemptible_tries,
-      compression_level = compression_level
-  }
+  #call Alignment.SamSplitter as SamSplitter {
+  #  input :
+  #    input_bam = input_bam,
+  #    n_reads = reads_per_file,
+  #    preemptible_tries = preemptible_tries,
+  #    compression_level = compression_level
+  #}
 
-  scatter(unmapped_bam in SamSplitter.split_bams) {
-    Float current_unmapped_bam_size = size(unmapped_bam, "GB")
-    String current_name = basename(unmapped_bam, ".bam")
+  #scatter(unmapped_bam in SamSplitter.split_bams) {
+  #  Float current_unmapped_bam_size = size(unmapped_bam, "GB")
+  #  String current_name = basename(unmapped_bam, ".bam")
 
-    call Alignment.SamToFastqAndBwaMem as SamToFastqAndBwaMem {
+    call Alignment.SamSplitterAndSamToFastqAndBwaMem as SamToFastqAndBwaMem {
       input:
         input_bam = unmapped_bam,
+        n_reads = reads_per_file,
         bwa_commandline = bwa_commandline,
         output_bam_basename = current_name,
         mouse_human_genome_fasta = mouse_human_genome_fasta,
@@ -71,19 +72,13 @@ workflow SplitLargeReadGroup {
         preemptible_tries = preemptible_tries
     }
 
-    Float current_mapped_size = size(SamToFastqAndBwaMem.output_bam, "GB")
-  }
-  
-  call SumFloats {
-    input:
-      sizes = current_mapped_size,
-      preemptible_tries = preemptible_tries
-  }
+    Float current_mapped_size = 2 * size(SamToFastqAndBwaMem.output_bam, "GB")
+  #}
 
   call GatherUnsortedBamFiles {
     input:
       input_bams = SamToFastqAndBwaMem.output_bam,
-      total_input_size = SumFloats.total_size,
+      total_input_size = SamToFastqAndBwaMem.current_mapped_size,
       output_bam_basename = output_bam_basename,
       preemptible_tries = preemptible_tries,
       compression_level = compression_level
@@ -97,26 +92,26 @@ workflow SplitLargeReadGroup {
 
 
 # Calculates sum of a list of floats
-task SumFloats {
-  input {
-    Array[Float] sizes
-    Int preemptible_tries
-  }
-
-  command <<<
-  python -c "print ~{sep="+" sizes}"
-  >>>
-
-  output {
-    Float total_size = read_float(stdout())
-  }
-
-  runtime {
-    docker: "us.gcr.io/broad-gotc-prod/python:2.7"
-    preemptible: true
-    maxRetries: preemptible_tries
-  }
-}
+#task SumFloats {
+#  input {
+#    Array[Float] sizes
+#    Int preemptible_tries
+#  }
+#
+#  command <<<
+#  python -c "print ~{sep="+" sizes}"
+#  >>>
+#
+#  output {
+#    Float total_size = read_float(stdout())
+#  }
+#
+#  runtime {
+#    docker: "us.gcr.io/broad-gotc-prod/python:2.7"
+#    preemptible: true
+#    maxRetries: preemptible_tries
+#  }
+#}
 
 
 # Combine multiple *unsorted* BAM files
