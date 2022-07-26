@@ -49,8 +49,8 @@ workflow SplitLargeReadGroup {
   #}
 
   #scatter(unmapped_bam in SamSplitter.split_bams) {
-  #  Float current_unmapped_bam_size = size(unmapped_bam, "GB")
-  #  String current_name = basename(unmapped_bam, ".bam")
+    Float current_unmapped_bam_size = size(input_bam, "GB")
+    String current_name = basename(input_bam, ".bam")
 
     call Alignment.SamSplitterAndSamToFastqAndBwaMem as SamToFastqAndBwaMem {
       input:
