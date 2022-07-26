@@ -49,15 +49,15 @@ workflow SplitLargeReadGroup {
   #}
 
   #scatter(unmapped_bam in SamSplitter.split_bams) {
-    Float current_unmapped_bam_size = size(input_bam, "GB")
-    String current_name = basename(input_bam, ".bam")
+    #Float current_unmapped_bam_size = size(input_bam, "GB")
+    #String current_name = basename(input_bam, ".bam")
 
     call Alignment.SamSplitterAndSamToFastqAndBwaMem as SamToFastqAndBwaMem {
       input:
-        input_bam = unmapped_bam,
+        input_bam = input_bam,
         n_reads = reads_per_file,
         bwa_commandline = bwa_commandline,
-        output_bam_basename = current_name,
+        output_bam_basename = output_bam_basename,
         mouse_human_genome_fasta = mouse_human_genome_fasta,
         mouse_human_genome_fasta_index = mouse_human_genome_fasta_index,
         mouse_human_genome_dict = mouse_human_genome_dict,
@@ -78,7 +78,7 @@ workflow SplitLargeReadGroup {
   call GatherUnsortedBamFiles {
     input:
       input_bams = SamToFastqAndBwaMem.output_bam,
-      total_input_size = SamToFastqAndBwaMem.current_mapped_size,
+      total_input_size = current_mapped_size,
       output_bam_basename = output_bam_basename,
       preemptible_tries = preemptible_tries,
       compression_level = compression_level
