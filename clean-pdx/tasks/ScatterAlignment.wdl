@@ -4,7 +4,7 @@ version 1.0
 task SamSplitterAndSamToFastqAndBwaMem {
 	input {
       File input_bam
-      File n_reads
+      Int n_reads
       String bwa_commandline
       String bwa_version
       String output_bam_basename
