@@ -2,7 +2,6 @@
   "CramToBamFlow.input_cram": "filepath/to/input.cram",
   "CramToBamFlow.sample_ID": "sample_ID",
 
-  "CramToBamFlow.ref_dict": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.dict",
   "CramToBamFlow.ref_fasta": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.fasta",
   "CramToBamFlow.ref_fasta_index": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.fasta.fai"
 }
