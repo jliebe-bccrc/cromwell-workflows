@@ -79,7 +79,7 @@ task CramToBamTask {
     String sample_ID
 
     # Runtime parameters
-    Int addtional_disk_size = 20 
+    Int additional_disk_size = 20 
     Int machine_mem_size = 15
     String docker_image
     Int preemptible_tries
@@ -87,7 +87,7 @@ task CramToBamTask {
 
   Float output_bam_size = size(input_cram, "GB") / 0.60
   Float ref_size = 5
-  Int disk_size = ceil(size(input_cram, "GB") + output_bam_size + ref_size) + addtional_disk_size
+  Int disk_size = ceil(size(input_cram, "GB") + output_bam_size + ref_size) + additional_disk_size
 
   # Calls samtools view to do the conversion
   command <<<
@@ -121,14 +121,14 @@ task CramToBamTask {
 task ValidateSamFile {
   input {
     File input_bam
-    Int addtional_disk_size = 10
+    Int additional_disk_size = 10
     Int machine_mem_size = 4
     String docker_image
     Int preemptible_tries
   }
 
     String output_name = basename(input_bam, ".bam") + ".validation_report"
-    Int disk_size = ceil(size(input_bam, "GB")) + addtional_disk_size
+    Int disk_size = ceil(size(input_bam, "GB")) + additional_disk_size
     Int command_mem_size = machine_mem_size - 1
   
   command <<<
