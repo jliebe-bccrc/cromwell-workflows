@@ -17,12 +17,12 @@ version 1.0
 ## licensing information pertaining to the included programs.
 
 
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/Alignment.wdl" as Alignment
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/BamProcessing.wdl" as Processing
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/Utilities.wdl" as Utils
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/SplitLargeReadGroup.wdl" as SplitRG 
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/GermlineStructs.wdl" as Structs
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/Alignment.wdl" as Alignment
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/BamProcessing.wdl" as Processing
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/Utilities.wdl" as Utils
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/SplitLargeReadGroup.wdl" as SplitRG 
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/GermlineStructs.wdl" as Structs
 
 
 # WORKFLOW DEFINITION
