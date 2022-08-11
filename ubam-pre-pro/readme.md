@@ -20,7 +20,7 @@ The original workflow was modified to include the initial conversion of BAM to u
 * Replace WorkflowInputsUrl with the URL to a local version of the inputs.json file (in an Azure Storage Account).
 * Optional: Replace WorkflowOptionsUrl andor WorkflowDependenciesUrl with the URL to a local version of the options.json andor dependencies.json files, respectively.
 
-ubam-pre-pro.wdl
+**ubam-pre-pro.wdl:**
 
  No changes necessary.
 
