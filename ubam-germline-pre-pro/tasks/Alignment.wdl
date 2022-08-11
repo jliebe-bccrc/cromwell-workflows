@@ -16,7 +16,7 @@ version 1.0
 ## licensing information pertaining to the included programs.
 
 
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/GermlineStructs.wdl"
 
 
 # Get version of BWA
