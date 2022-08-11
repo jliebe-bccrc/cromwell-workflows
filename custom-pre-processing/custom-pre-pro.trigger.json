@@ -1,6 +1,0 @@
-{
-  "WorkflowUrl": "https://url/to/custom-pre-pro.wdl",
-  "WorkflowInputsUrl": "https://url/to/custom-pre-pro.inputs.json",
-  "WorkflowOptionsUrl": null,
-  "WorkflowDependenciesUrl": null
-}
