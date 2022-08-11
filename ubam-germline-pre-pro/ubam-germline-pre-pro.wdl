@@ -36,13 +36,13 @@ version 1.0
 ## "UbamGermlinePrePro".
 
 
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/BamToUnmappedBam.wdl" as ToUbam
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/BamToCram.wdl" as ToCram
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/AggregatedBamQC.wdl" as AggregatedQC
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/VariantCalling.wdl" as ToGvcf
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-germline-pre-pro/tasks/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-germline-pre-pro/tasks/BamToUnmappedBam.wdl" as ToUbam
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-germline-pre-pro/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-germline-pre-pro/tasks/BamToCram.wdl" as ToCram
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-germline-pre-pro/tasks/AggregatedBamQC.wdl" as AggregatedQC
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-germline-pre-pro/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-germline-pre-pro/tasks/VariantCalling.wdl" as ToGvcf
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-germline-pre-pro/tasks/GermlineStructs.wdl"
 
 
 # WORKFLOW DEFINITION
