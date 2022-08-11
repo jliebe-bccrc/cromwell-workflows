@@ -15,8 +15,8 @@ version 1.0
 ## page at https://hub.docker.com/r/broadinstitute/genomes-in-the-cloud/ for detailed
 ## licensing information pertaining to the included programs.
 
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/Qc.wdl" as QC
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-germline-pre-pro/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-germline-pre-pro/tasks/GermlineStructs.wdl"
 
 # WORKFLOW DEFINITION
 workflow AggregatedBamQC {
