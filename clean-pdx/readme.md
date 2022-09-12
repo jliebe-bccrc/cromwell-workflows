@@ -44,4 +44,10 @@ For fastq-clean-pdx, simply use an input FASTQ file instead of a BAM.
 ---
 
 ### Expected Running Time
-* 
+
+
+---
+
+### Creating the Chimeric Reference Genome
+
+To create the chimeric mouse/human (mm10/hg38) genome, both individual genomes were downloaded to a local stoarge account. All the mouse chromosomes were renamed to make them distinct from the human genomes; ex., renamed all chromosomes from "chr1" to "m_chr1". The updated mouse genome was then concatenated to the human genome to create the chimeric genome. BWA Index, samtools-faidx and samtools-dict were used to create the other required reference files.
