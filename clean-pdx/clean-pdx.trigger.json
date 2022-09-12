@@ -1,6 +1,0 @@
-{
-  "WorkflowUrl": "https://url/to/clean-pdx.wdl",
-  "WorkflowInputsUrl": "https://url/to/clean-pdx.inputs.json",
-  "WorkflowOptionsUrl": null,
-  "WorkflowDependenciesUrl": null
-}
