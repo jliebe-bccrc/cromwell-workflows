@@ -1,0 +1,18 @@
+{
+  "CleanPDX.input_bam": "/filepath/to/input.bam",
+  "CleanPDX.sample_ID": "sample_ID",
+  "CleanPDX.sample_RGID": "sample_RGID",
+  "CleanPDX.sample_PU": "sample_PU",
+  "CleanPDX.sample_SM": "sample_SM",
+  "CleanPDX.sample_PL": "sample_PL",
+
+  "CleanPDX.mouse_human_genome_dict": "/filepath/to/mouse_human_genome.fa.dict",
+  "CleanPDX.mouse_human_genome_fasta": "/filepath/to/mouse_human_genome.fa",
+  "CleanPDX.mouse_human_genome_fasta_index": "/filepath/to/mouse_human_genome.fa.fai",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_sa": "/filepath/to/mouse_human_genome.fa.sa",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_amb": "/filepath/to/mouse_human_genome.fa.amb",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_bwt": "/filepath/to/mouse_human_genome.fa.bwt",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_ann": "/filepath/to/mouse_human_genome.fa.ann",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_pac": "/filepath/to/mouse_human_genome.fa.pac",
+  "CleanPDX.SamToFastqAndBwaMem.mouse_human_genome_alt": null
+}
