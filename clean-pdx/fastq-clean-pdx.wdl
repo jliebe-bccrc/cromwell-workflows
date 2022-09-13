@@ -226,7 +226,7 @@ task SortBwaBamAndFilter {
     MAX_RECORDS_IN_RAM=300000 | \
     samtools view -h /dev/stdin |
     awk '{if($3 !~ /m_chr/){print $0}}' |
-    samtools view -F 4 -F 8 -f 2 -Sb - > ~{output_bam_basename}.bam
+    samtools view -Shb - > ~{output_bam_basename}.bam
   >>>
 
   runtime {
