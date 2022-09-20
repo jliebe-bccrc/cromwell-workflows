@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/reheader.wdl",
+  "WorkflowInputsUrl": "https://url/to/reheader.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}

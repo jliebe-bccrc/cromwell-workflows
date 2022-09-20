@@ -1,0 +1,8 @@
+{
+  "Reheader.input_bam": "/filepath/to/input.bam",
+  "Reheader.sample_ID": "sample_ID",
+  "Reheader.sample_RGID": "sample_RGID",
+  "Reheader.sample_PU": "sample_PU",
+  "Reheader.sample_SM": "sample_SM",
+  "Reheader.sample_PL": "sample_PL"
+}
