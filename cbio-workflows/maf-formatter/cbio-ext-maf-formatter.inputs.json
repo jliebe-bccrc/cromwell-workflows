@@ -1,0 +1,5 @@
+{
+  "CbioExtMafFormatter.input_maf": "filepath/to/filtered.annotated.maf",
+  "CbioExtMafFormatter.maf_id": "tumor_id",
+  "CbioExtMafFormatter.normal_id": "normal_id"
+}
