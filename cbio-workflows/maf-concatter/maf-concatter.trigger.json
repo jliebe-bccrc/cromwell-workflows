@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/maf-concatter.wdl",
+  "WorkflowInputsUrl": "https://url/to/maf-concatter.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}

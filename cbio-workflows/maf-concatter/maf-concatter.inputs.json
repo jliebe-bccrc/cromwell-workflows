@@ -1,0 +1,8 @@
+{
+  "MafConcatter.input_maf_files": [
+    "/filepath/to/input.maf1",
+    "/filepath/to/input.maf2"
+  ],
+  "MafConcatter.data_type": "extended",
+  "MafConcatter.template_file": "/filepath/to/template.txt"
+}
