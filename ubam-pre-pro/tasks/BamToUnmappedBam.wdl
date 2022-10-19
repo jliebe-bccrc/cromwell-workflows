@@ -45,7 +45,7 @@ workflow BamToUnmappedBams {
   call RevertSam {
     input:
       input_bam = input_bam,
-      disk_size = ceil(input_size * 3) + additional_disk_size,
+      disk_size = ceil(input_size * 4) + additional_disk_size,
       docker = gatk_docker,
       gatk_path = gatk_path,
       preemptible_tries = preemptible_tries
