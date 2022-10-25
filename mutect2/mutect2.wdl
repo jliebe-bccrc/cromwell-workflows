@@ -67,8 +67,9 @@ version 1.0
 ## pages at https://hub.docker.com/r/broadinstitute/* for detailed licensing information
 ## pertaining to the included programs.
 ##
-## Updated by Aparicio Lab (BC Cancer Research Centre) May 2022 to optimize runtime 
-## parameters for Cromwell on Azure implementation (instead of Google Cloud), and to output both VCF and MAF funcotated variants.
+## UPDATE NOTES :
+## Updated by Jenna Liebe at the Aparicio Lab (BC Cancer Research Centre), May 2022.
+## Runtime parameters are optimized for Cromwell on Azure implementation (instead of Google Cloud), and both VCF and MAF funcotated variants are outputted.
 
 
 struct Runtime {
