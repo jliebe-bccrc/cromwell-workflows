@@ -1,6 +1,6 @@
 version 1.0
 
-## Copyright Broad Institute, 2018 and Aparicio Lab (BCCRC), 2022
+## Copyright Broad Institute, 2018 and Aparicio Lab (BC Cancer Research Centre), 2022
 ##
 ## This WDL pipeline implements data pre-processing according to the GATK Best Practices 
 ## (June 2016) for human whole-genome data.
@@ -27,14 +27,14 @@ version 1.0
 ## licensing information pertaining to the included programs.
 ## 
 ## UPDATE NOTES :
-## Updated by Aparicio Lab (BC Cancer Research Centre) May/June 2022.
+## Updated by Jenna Liebe at the Aparicio Lab (BC Cancer Research Centre), May/June 2022.
 ##
 ## This pipeline has been modified from its original, which can be found at 
 ## https://github.com/microsoft/gatk4-genome-processing-pipeline-azure. Major changes include
-## removing all germline SNP/indel calling and adding BAM to uBAM functionality; pipeline is now
-## used for converting unmapped BAM files (uBAMs) into analysis-ready BAM files, that can be
-## used in later analysis (ex., somatic variant calling); calling samtools flagstat on the analysis-
-## ready BAMs; producing CRAM outputs for later storage; and renaming the workflow to "UbamPrePro".
+## removing all germline SNP/indel calling and adding BAM to uBAM functionality - pipeline is now
+## used for converting unmapped BAM files (uBAMs) into analysis-ready BAM files that can be
+## used in later analysis (ex., somatic variant calling). Also added tasks for calling samtools flagstat on the analysis-
+## ready BAMs and producing CRAM outputs for later storage; and renamed the workflow to "UbamPrePro".
 
 
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/BamToUnmappedBam.wdl" as ToUbam
