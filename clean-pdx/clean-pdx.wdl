@@ -1,7 +1,7 @@
 version 1.0 
 
-## Copyright Aparicio Lab (BCCRC), 2022
-##
+## Copyright Aparicio Lab (BC Cancer Research Centre), 2022
+## Created by Jenna Liebe
 ## This WDL pipeline strips out mouse reads from an input PDX (patient-derived xenograft) file
 ## in BAM format, by performing alignment to a chimeric mouse-human (mm10-hg38) reference
 ## genome and then removing all reads that more closely align to mouse reads.
