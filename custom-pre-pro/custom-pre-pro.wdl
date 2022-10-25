@@ -1,6 +1,6 @@
 version 1.0
 
-## Copyright Broad Institute, 2018 and Aparicio Lab (BCCRC), 2022
+## Copyright Broad Institute, 2018 and Aparicio Lab (BC Cancer Research Centre), 2022
 ##
 ## This WDL pipeline implements data pre-processing according to the GATK Best Practices 
 ## (June 2016) for human whole-genome data.
@@ -27,7 +27,7 @@ version 1.0
 ## licensing information pertaining to the included programs.
 ## 
 ## UPDATE NOTES :
-## Updated by Aparicio Lab (BC Cancer Research Centre) May 2022.
+## Updated by Jenna Liebe at the Aparicio Lab (BC Cancer Research Centre), May 2022.
 ##
 ## This pipeline has been modified from its original, which can be found at 
 ## https://github.com/microsoft/gatk4-genome-processing-pipeline-azure. Major changes include
