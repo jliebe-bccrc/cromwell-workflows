@@ -1,6 +1,6 @@
 version 1.0
 
-## Copyright Broad Institute, 2017
+## Copyright Broad Institute, 2017, and Aparicio Lab (BC Cancer Research Centre), 2022
 ##
 ## This WDL workflow runs GATK4 Mutect 2 on a single tumor-normal pair or on a single tumor sample,
 ## and performs additional filtering and functional annotation tasks.
@@ -67,9 +67,10 @@ version 1.0
 ## pages at https://hub.docker.com/r/broadinstitute/* for detailed licensing information
 ## pertaining to the included programs.
 ##
-## Updated by Aparicio Lab (BC Cancer Research Centre) May 2022 to optimize runtime 
-## parameters for Cromwell on Azure implementation (instead of Google Cloud), to output both VCF and MAF funcotated variants, and optionally, to format the outputted MAF file
-## to comply with cBioPortal's import standards.
+## UPDATE NOTES :
+## Updated by Jenna Liebe at the Aparicio Lab (BC Cancer Research Centre), October 2022.
+## Runtime parameters optimized for Cromwell on Azure implementation (instead of Google Cloud), outputs both VCF and MAF funcotated variants, 
+## and optionally formats the outputted MAF file to comply with cBioPortal's import standards.
 
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/cbio-workflows/maf-formatter/cbio-ext-maf-formatter.wdl" as CbioMaf
 
