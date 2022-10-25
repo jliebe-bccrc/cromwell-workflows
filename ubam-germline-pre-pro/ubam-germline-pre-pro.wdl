@@ -1,6 +1,6 @@
 version 1.0
 
-## Copyright Broad Institute, 2018 and Aparicio Lab (BCCRC), 2022
+## Copyright Broad Institute, 2018 and Aparicio Lab (BC Cancer Research Centre), 2022
 ##
 ## This WDL pipeline implements data pre-processing according to the GATK Best Practices 
 ## (June 2016) for human whole-genome data.
@@ -27,11 +27,11 @@ version 1.0
 ## licensing information pertaining to the included programs.
 ## 
 ## UPDATE NOTES :
-## Updated by the Aparicio Lab (BC Cancer Research Centre) May/June 2022.
-##
+## Updated by Jenna Liebe at the Aparicio Lab (BC Cancer Research Centre) May/June 2022.
+## 
 ## This pipeline has been modified from its original, which can be found at 
 ## https://github.com/microsoft/gatk4-genome-processing-pipeline-azure. Major changes 
-## include adding BAM to uBAM conversion and flagstat tasks; changing the default pipeline
+## include adding BAM to uBAM conversion, flagstat, and BAM to CRAM tasks; changing the default pipeline
 ## settings to output a VCF instead of a gVCF file; and renaming the workflow to 
 ## "UbamGermlinePrePro".
 
