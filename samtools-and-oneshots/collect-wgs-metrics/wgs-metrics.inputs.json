@@ -1,0 +1,10 @@
+{
+  "WgsMetrics.input_bam": "filepath/to/input.bam",
+  "WgsMetrics.input_bam_index": "filepath/to/input.bai",
+  "WgsMetrics.sample_ID": "sample_ID",
+
+  "WgsMetrics.wgs_coverage_interval_list": "/datasettestinputs/dataset/references/hg38/v0/wgs_coverage_regions.hg38.interval_list",
+  "WgsMetrics.ref_fasta": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "WgsMetrics.ref_fasta_index": "/datasettestinputs/dataset/references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
+  "WgsMetrics.read_length": 250
+}

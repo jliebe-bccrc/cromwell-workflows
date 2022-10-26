@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/wgs-metrics.wdl",
+  "WorkflowInputsUrl": "https://url/to/wgs-metrics.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}
