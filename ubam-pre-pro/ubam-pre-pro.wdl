@@ -40,6 +40,7 @@ version 1.0
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/BamToUnmappedBam.wdl" as ToUbam
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/BamToCram.wdl" as ToCram
+import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/Qc.wdl" as QC
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/GermlineStructs.wdl"
 
 
@@ -93,6 +94,18 @@ workflow UbamPrePro {
     File provided_output_bam_index = UnmappedBamToAlignedBam.output_bam_index
   }
 
+  call QC.CollectWgsMetrics as CollectWgsMetrics {
+    input:
+      input_bam = UnmappedBamToAlignedBam.output_bam,
+      input_bam_index = UnmappedBamToAlignedBam.output_bam_index,
+      metrics_filename = sample_info.base_file_name + ".wgs_metrics",
+      ref_fasta = references.reference_fasta.ref_fasta,
+      ref_fasta_index = references.reference_fasta.ref_fasta_index,
+      wgs_coverage_interval_list = wgs_coverage_interval_list,
+      read_length = read_length,
+      preemptible_tries = papi_settings.agg_preemptible_tries
+  }
+
   call ToCram.BamToCram {
     input:
       input_bam = UnmappedBamToAlignedBam.output_bam,
@@ -118,6 +131,8 @@ workflow UbamPrePro {
 
     File? output_bam = provided_output_bam
     File? output_bam_index = provided_output_bam_index
+    
+    File output_wgs_metrics = CollectWgsMetrics.metrics
 
     File output_cram = BamToCram.output_cram
     File output_cram_index = BamToCram.output_cram_index
