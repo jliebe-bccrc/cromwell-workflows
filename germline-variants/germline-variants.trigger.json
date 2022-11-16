@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/germline-workflow.wdl",
+  "WorkflowInputsUrl": "https://url/to/germline-workflow.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}
