@@ -37,7 +37,7 @@ workflow CleanPDX {
     File mouse_human_genome_fasta_index
     File mouse_human_genome_dict 
 
-		Int num_threads = 20
+	Int num_threads = 20
 
     String bwa_commandline = "bwa mem -K 100000000 -p -v 3 -t 16 -Y $bash_ref_fasta"
 
@@ -52,7 +52,7 @@ workflow CleanPDX {
 	call GetBwaVersion
 
 
-	# Convert the input BAM to paired fastq reads, and align to the chimeric mouse-human genome.
+	# Convert input_bam to paired fastq reads
 	call SamToFastqAndBwaMem {
     input:
       input_bam = input_bam,
@@ -68,9 +68,8 @@ workflow CleanPDX {
   }
 
 
-  # Sort the output of BwaMem (a BAM file), and filter based on whether 
-  # the read aligned better to mouse or human
-  call SortBwaBamAndFilter {
+  # Sort the output of SamToFastqAndBwaMem so that it can be filtered
+  call SortBwaBam {
   	input:
   		input_bam = SamToFastqAndBwaMem.output_bam,
   		output_bam_basename = sample_ID + ".aligned.sorted",
@@ -80,32 +79,71 @@ workflow CleanPDX {
   }
 
 
-  # Sort the BAM by queryname 
-  call QuerynameSort {
+  # Filter out mouse alignments from the sorted BAM file
+  call FilterReads {
+  	input:
+  		input_bam = SortBwaBam.output_bam,
+  		output_bam_basename = sample_ID + ".sorted.filtered",
+  		preemptible_tries = preemptible_tries,
+  		gotc_docker = gotc_docker
+  }
+
+
+  # Sort the BAM by queryname and then extract non-mouse reads by converting to FASTQ
+  call SortAndExtract {
     input:
-      input_bam = SortBwaBamAndFilter.output_bam,
-      output_bam_basename = sample_ID + ".sorted.hgonly",
+      input_bam = FilterReads.output_bam,
+      output_fastq_basename = sample_ID + ".sorted.hgonly",
+      output_fastq_basename2 = sample_ID + ".2.sorted.hgonly",
       preemptible_tries = preemptible_tries,
       gotc_docker = gotc_docker
   }
 
-  # Reheader the BAM file so that only human chromosomes remain
-  call Reheader {
-    input:
-      input_bam = QuerynameSort.output_bam,
-      sample_ID = sample_ID,
-      sample_RGID = sample_RGID,
-      sample_PU = sample_PU,
-      sample_SM = sample_SM,
-      sample_PL = sample_PL,
-      output_bam_basename = sample_ID + ".sorted.mapped",
-      compression_level = compression_level,
-      preemptible_tries = preemptible_tries,
-      gotc_docker = gotc_docker
+
+  scatter (output_fastq in SortAndExtract.output_fastqs) 
+  {
+    String output_basename = basename(output_fastq)
+
+    # Convert final FASTQ to uBAM
+    call FastqToSam {
+      input:
+        input_fastq = output_fastq,
+        unsorted_bam_basename = output_basename + ".unsorted.unmapped.bam",
+        sample_ID = sample_ID,
+        compression_level = compression_level,
+        preemptible_tries = preemptible_tries,
+        gotc_docker = gotc_docker
     }
 
+    # Sort the uBAM
+    call FinalSort {
+      input:
+        input_bam = FastqToSam.output_bam,
+        sorted_bam_basename = output_basename + ".sorted.unmapped",
+        compression_level = compression_level,
+        preemptible_tries = preemptible_tries,
+        gotc_docker = gotc_docker
+    }
+  
+    # Reheader the uBAM
+    call Reheader {
+      input:
+        input_bam = FinalSort.sorted_bam,
+        sample_ID = sample_ID,
+        sample_RGID = sample_RGID,
+        sample_PU = sample_PU,
+        sample_SM = sample_SM,
+        sample_PL = sample_PL,
+        output_bam_basename = output_basename + ".final.unmapped",
+        compression_level = compression_level,
+        preemptible_tries = preemptible_tries,
+        gotc_docker = gotc_docker
+    }
+  }
+
+
   output {
-    File output_bam = Reheader.output_bam
+    Array[File] output_bams = Reheader.output_bam
   }
 }
 
@@ -133,7 +171,7 @@ task GetBwaVersion {
 }
 
 
-# Convert the input BAM to paired fastq reads, and align to the chimeric mouse-human genome.
+# Convert input_bam to paired fastq reads and aligns to a combined mouse/human reference
 task SamToFastqAndBwaMem {
 	input {
     	File input_bam
@@ -144,7 +182,7 @@ task SamToFastqAndBwaMem {
       File mouse_human_genome_fasta
       File mouse_human_genome_fasta_index
       File mouse_human_genome_dict
-      
+
       File mouse_human_genome_sa
       File mouse_human_genome_amb
       File mouse_human_genome_ann
@@ -163,7 +201,9 @@ task SamToFastqAndBwaMem {
   # Since ref_size/bwa_ref_size don't like getting the size of the input ref files, just estimate that total is ~15GB and add to disk_size
 
   # Sometimes the output is larger than the input, or a task can spill to disk.
-  Int disk_size = ceil(unmapped_bam_size + 16 + (3 * unmapped_bam_size) + 100)
+  # In these cases we need to account for the input (1) and the output (1.5) or the input(1), the output(1), and spillage (.5).
+  Float disk_multiplier = 2.5
+  Int disk_size = ceil(unmapped_bam_size + 16 + (disk_multiplier * unmapped_bam_size) + 200)
 
 	command <<<
     set -o pipefail
@@ -185,8 +225,8 @@ task SamToFastqAndBwaMem {
 		docker: gotc_docker
 		preemptible: true
 		maxRetries: preemptible_tries
-		memory: "30 GB"
-		cpu: 32
+		memory: "24 GB"
+		cpu: 18
 		disk: disk_size + " GB"
 	}
 
@@ -197,9 +237,8 @@ task SamToFastqAndBwaMem {
 }
 
 
-# Sort the output of BwaMem (a BAM file), and filter based on whether 
-# the read aligned better to mouse or human
-task SortBwaBamAndFilter {
+# Sort the BAM file outputted by BWA mem
+task SortBwaBam {
   input {
     File input_bam
     String output_bam_basename
@@ -210,57 +249,89 @@ task SortBwaBamAndFilter {
     String gotc_docker
   }
 
-  # SortBwaBam spills to disk a lot more because we are only storing 300000 records in RAM; it's faster but it needs
-  # more disk space.  Also it spills to disk in an uncompressed format, so we need to account for that with a larger multiplier.
+  # SortBwaBam spills to disk a lot more because we are only store 300000 records in RAM now because its faster for our data so it needs
+  # more disk space.  Also it spills to disk in an uncompressed format so we need to account for that with a larger multiplier
   
-  Float sort_sam_disk_multiplier = 4
+  Float sort_sam_disk_multiplier = 3.25
   Int disk_size = ceil(sort_sam_disk_multiplier * size(input_bam, "GB")) + 20
 
-  # We don't print out the header during filtering, because otherwise the mouse chromosomes will still be listed (even though 
-  # the reads have been removed). The header will be recreated during the Reheader task.
-
   command <<<
-    set -o pipefail
-    set -e
     java -Dsamjdk.compression_level=~{compression_level} -Xms4000m -jar /usr/gitc/picard.jar \
     SortSam \
     INPUT=~{input_bam} \
-    OUTPUT=/dev/stdout \
+    OUTPUT=~{output_bam_basename}.bam \
     SORT_ORDER="coordinate" \
     CREATE_INDEX=true \
-    CREATE_MD5_FILE=true \
-    MAX_RECORDS_IN_RAM=300000 | \
-    samtools view -h /dev/stdin |
-    awk '{if($3 !~ /m_chr/){print $0}}' |
-    samtools view -Shb - > ~{output_bam_basename}.bam
+    CREATE_MD5_FILE=false \
+    MAX_RECORDS_IN_RAM=300000
   >>>
 
   runtime {
     docker: gotc_docker
     disk: disk_size + " GB"
-    cpu: 32
-    memory: "24 GB"
+    cpu: 8
+    memory: "5000 MB"
     preemptible: true
     maxRetries: preemptible_tries
   }
 
   output {
     File output_bam = "~{output_bam_basename}.bam"
+    File output_bam_index = "~{output_bam_basename}.bai"
   }
 }
 
-# Sort the BAM by queryname
-task QuerynameSort {
+
+# Filter out mouse alignments from the sorted BAM file
+task FilterReads {
+	input {
+		File input_bam
+		String output_bam_basename
+		
+		Int preemptible_tries
+		
+		String gotc_docker
+	}
+
+	Float input_bam_size = size(input_bam, "GB")
+	Int disk_size = ceil(input_bam_size * 2.5)
+
+	command <<<
+    set -o pipefail
+    set -e
+    samtools view -h ~{input_bam} |
+    awk '{if($3 !~ /m_chr/){print $0}}' |
+    samtools view -Shb - > ~{output_bam_basename}.bam
+	>>>
+
+	runtime {
+		docker: gotc_docker
+		memory: "16 GB"
+		cpu: 16
+		disk: disk_size + " GB"
+		preemptible: true
+		maxRetries: preemptible_tries
+	}
+
+	output {
+    File output_bam = "~{output_bam_basename}.bam"
+  }
+}
+
+
+# Sort the BAM by queryname and then extract non-mouse reads by converting to FASTQ
+task SortAndExtract {
   input {
     File input_bam
-    String output_bam_basename
-
+    String output_fastq_basename
+    String output_fastq_basename2
+    
     Int preemptible_tries
     String gotc_docker
   }
 
-  Float sort_sam_disk_multiplier = 6
-  Int disk_size = ceil(sort_sam_disk_multiplier * size(input_bam, "GB")) + 150
+  Float input_bam_size = size(input_bam, "GB")
+  Int disk_size = ceil(input_bam_size * 7)
 
   command <<<
     set -o pipefail
@@ -268,27 +339,106 @@ task QuerynameSort {
     java -Xms4000m -jar /usr/gitc/picard.jar \
     SortSam \
     INPUT=~{input_bam} \
-    OUTPUT=~{output_bam_basename}.bam \
+    OUTPUT=/dev/stdout \
     SORT_ORDER="queryname" \
-    MAX_RECORDS_IN_RAM=300000
+    MAX_RECORDS_IN_RAM=300000 | \
+    samtools fastq -1 ~{output_fastq_basename}.fastq -2 ~{output_fastq_basename2}.fastq -0 /dev/null -s /dev/null -n /dev/stdin
   >>>
 
   runtime {
     docker: gotc_docker
-    memory: "36 GB"
-    cpu: 16
+    memory: "32 GB"
+    cpu: 32
     disk: disk_size + " GB"
     preemptible: true
     maxRetries: preemptible_tries
   }
 
   output {
-    File output_bam = "~{output_bam_basename}.bam"
+    Array[File] output_fastqs = glob("*.fastq")
   }
 }
 
 
-# Reheader the BAM file so that only human chromosomes remain
+task FastqToSam {
+  input {
+    File input_fastq
+    String unsorted_bam_basename
+    String sample_ID
+
+    Int preemptible_tries
+    Int compression_level
+    
+    String gotc_docker
+  }
+
+  Float sort_sam_disk_multiplier = 3.25
+  Int disk_size = ceil(sort_sam_disk_multiplier * size(input_fastq, "GB")) + 20
+
+  command <<<
+    java -Xms4000m -jar /usr/gitc/picard.jar \
+    FastqToSam \
+    F1=~{input_fastq} \
+    O=~{unsorted_bam_basename} \
+    SM=~{sample_ID} \
+    SORT_ORDER=queryname \
+    MAX_RECORDS_IN_RAM=300000
+  >>>
+
+  runtime {
+    docker: gotc_docker
+    memory: "24 GB"
+    disk: disk_size + " GB"
+    cpu: 16
+    preemptible: true
+    maxRetries: preemptible_tries
+  }
+
+  output {
+    File output_bam = "~{unsorted_bam_basename}"
+  }
+}
+
+
+task FinalSort {
+  input {
+    File input_bam
+    String sorted_bam_basename
+
+    Int preemptible_tries
+    Int compression_level
+    
+    String gotc_docker
+  }
+
+  Float sort_sam_disk_multiplier = 5
+  Int disk_size = ceil(sort_sam_disk_multiplier * size(input_bam, "GB")) + 20
+
+  command <<<
+    java -Xms4000m -jar /usr/gitc/picard.jar \
+    SortSam \
+    INPUT=~{input_bam} \
+    OUTPUT=~{sorted_bam_basename}.bam \
+    SORT_ORDER="queryname" \
+    CREATE_INDEX=true \
+    CREATE_MD5_FILE=true \
+    MAX_RECORDS_IN_RAM=300000
+  >>>
+
+  runtime {
+    docker: gotc_docker
+    memory: "24 GB"
+    disk: disk_size + " GB"
+    cpu: 18
+    preemptible: true
+    maxRetries: preemptible_tries
+  }
+
+  output {
+    File sorted_bam = "~{sorted_bam_basename}.bam"
+  }
+}
+
 task Reheader {
   input {
     File input_bam
@@ -306,7 +456,7 @@ task Reheader {
   }
 
   Float input_bam_size = size(input_bam, "GB")
-  Int disk_size = ceil(input_bam_size * 2)
+  Int disk_size = ceil(input_bam_size * 3)
 
   command <<<
     java -Xms4000m -jar /usr/gitc/picard.jar \
