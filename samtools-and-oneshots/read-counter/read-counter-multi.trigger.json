@@ -1,0 +1,6 @@
+{
+  "WorkflowUrl": "https://url/to/read-counter-multi-2.wdl",
+  "WorkflowInputsUrl": "https://url/to/read-counter-multi-2.inputs.json",
+  "WorkflowOptionsUrl": null,
+  "WorkflowDependenciesUrl": null
+}

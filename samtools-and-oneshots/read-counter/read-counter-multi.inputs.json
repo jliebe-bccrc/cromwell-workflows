@@ -1,0 +1,25 @@
+{
+  "MultiReadCounter.input_bam_files": [
+    {
+      "left": "sample_ID_1",
+      "right": {
+        "bam": "/filepath/to/input_1.bam",
+        "index": "/filepath/to/input_1.bam.bai"
+      }
+    },
+    {
+      "left": "sample_ID_2",
+      "right": {
+        "bam": "/filepath/to/input_2.bam",
+        "index": "/filepath/to/input_2.bam.bai"
+      }
+    },
+    {
+      "left": "sample_ID_3",
+      "right": {
+        "bam": "/filepath/to/input_3.bam",
+        "index": "/filepath/to/input_3.bam.bai"
+      }
+    }
+  ]
+}
