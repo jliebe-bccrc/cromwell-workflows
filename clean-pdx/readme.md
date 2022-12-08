@@ -9,7 +9,7 @@ This workflow was developed from scratch, using components of other existing wor
 
 CleanPDX follows the steps outlined below:
 
-<p align="center"><img src="https://user-images.githubusercontent.com/107152811/190019682-38868c8a-9527-465a-9d7a-303fbf721338.png" width="300"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/107152811/206541260-7f603694-f270-4ffe-bfa4-649d82ccf180.png" width="300"></p>
 
 ---
 
@@ -39,13 +39,11 @@ CleanPDX follows the steps outlined below:
 
 * No changes necessary.
 
-For fastq-clean-pdx, simply use an input FASTQ file instead of a BAM.
-
 ---
 
 ### Expected Running Time
 
-For a 122GB input BAM file, CleanPDX will take ~47 hours to complete.
+For a 122GB input BAM file, CleanPDX will take ~54 hours to complete.
 
 ---
 
