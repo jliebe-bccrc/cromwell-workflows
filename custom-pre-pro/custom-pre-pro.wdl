@@ -39,7 +39,7 @@ version 1.0
 import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/az1.1.0/tasks/UnmappedBamToAlignedBam.wdl" as ToBam
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/BamToCram.wdl" as ToCram
 import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/ubam-pre-pro/tasks/Qc.wdl" as QC
-
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/az1.1.0/structs/GermlineStructs.wdl"
 
 # WORKFLOW DEFINITION
 workflow PreProcessing {
