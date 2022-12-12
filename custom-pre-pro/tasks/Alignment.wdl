@@ -15,9 +15,7 @@ version 1.0
 ## page at https://hub.docker.com/r/broadinstitute/genomes-in-the-cloud/ for detailed
 ## licensing information pertaining to the included programs.
 
-
-import "https://raw.githubusercontent.com/jliebe-bccrc/cromwell-workflows/main/combo-ubam-pre-pro/tasks/GermlineStructs.wdl"
-
+import "https://raw.githubusercontent.com/microsoft/gatk4-genome-processing-pipeline-azure/az1.1.0/structs/GermlineStructs.wdl"
 
 # Get version of BWA
 task GetBwaVersion {
@@ -45,18 +43,23 @@ task SamToFastqAndBwaMemAndMba {
     String bwa_version
     String output_bam_basename
 
-    # reference_fasta.ref_alt is the .alt file from bwa-kit
-    # (https://github.com/lh3/bwa/tree/master/bwakit),
-    # listing the reference contigs that are "alternative".
-    ReferenceFasta reference_fasta
+    File ref_dict
+    File ref_fasta
+    File ref_fasta_index
+    File ref_alt
+    File ref_sa
+    File ref_amb
+    File ref_bwt
+    File ref_ann
+    File ref_pac
 
     Int compression_level
     Int preemptible_tries
   }
 
   Float unmapped_bam_size = size(input_bam, "GB")
-  Float ref_size = size(reference_fasta.ref_fasta, "GB") + size(reference_fasta.ref_fasta_index, "GB") + size(reference_fasta.ref_dict, "GB")
-  Float bwa_ref_size = ref_size + size(reference_fasta.ref_alt, "GB") + size(reference_fasta.ref_amb, "GB") + size(reference_fasta.ref_ann, "GB") + size(reference_fasta.ref_bwt, "GB") + size(reference_fasta.ref_pac, "GB") + size(reference_fasta.ref_sa, "GB")
+  Float ref_size = size(ref_fasta, "GB") + size(ref_fasta_index, "GB") + size(ref_dict, "GB")
+  Float bwa_ref_size = ref_size + size(ref_alt, "GB") + size(ref_amb, "GB") + size(ref_ann, "GB") + size(ref_bwt, "GB") + size(ref_pac, "GB") + size(ref_sa, "GB")
   # Sometimes the output is larger than the input, or a task can spill to disk.
   # In these cases we need to account for the input (1) and the output (1.5) or the input(1), the output(1), and spillage (.5).
   Float disk_multiplier = 2.5
@@ -65,11 +68,10 @@ task SamToFastqAndBwaMemAndMba {
   command <<<
     set -o pipefail
     set -e
-
     # set the bash variable needed for the command-line
-    bash_ref_fasta=~{reference_fasta.ref_fasta}
-    # if reference_fasta.ref_alt has data in it,
-    if [ -s ~{reference_fasta.ref_alt} ]; then
+    bash_ref_fasta=~{ref_fasta}
+    # if ref_alt has data in it,
+    if [ -s ~{ref_alt} ]; then
       java -Xms1000m -Xmx1000m -jar /usr/gitc/picard.jar \
         SamToFastq \
         INPUT=~{input_bam} \
@@ -87,8 +89,8 @@ task SamToFastqAndBwaMemAndMba {
         ALIGNED_BAM=/dev/stdin \
         UNMAPPED_BAM=~{input_bam} \
         OUTPUT=~{output_bam_basename}.bam \
-        REFERENCE_SEQUENCE=~{reference_fasta.ref_fasta} \
-        PAIRED_RUN=true \
+        REFERENCE_SEQUENCE=~{ref_fasta} \
+        PAIRED_RUN=false \
         SORT_ORDER="unsorted" \
         IS_BISULFITE_SEQUENCE=false \
         ALIGNED_READS_ONLY=false \
@@ -105,15 +107,14 @@ task SamToFastqAndBwaMemAndMba {
         ALIGNER_PROPER_PAIR_FLAGS=true \
         UNMAP_CONTAMINANT_READS=true \
         ADD_PG_TAG_TO_READS=false
-
       grep -m1 "read .* ALT contigs" ~{output_bam_basename}.bwa.stderr.log | \
       grep -v "read 0 ALT contigs"
-
-    # else reference_fasta.ref_alt is empty or could not be found
+    # else ref_alt is empty or could not be found
     else
       exit 1;
     fi
   >>>
+
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: true
@@ -122,6 +123,7 @@ task SamToFastqAndBwaMemAndMba {
     cpu: "16"
     disk: disk_size + " GB"
   }
+
   output {
     File output_bam = "~{output_bam_basename}.bam"
     File bwa_stderr_log = "~{output_bam_basename}.bwa.stderr.log"
@@ -144,18 +146,18 @@ task SamSplitter {
   command {
     set -e
     mkdir output_dir
-
     total_reads=$(samtools view -c ~{input_bam})
-
     java -Dsamjdk.compression_level=~{compression_level} -Xms3000m -jar /usr/gitc/picard.jar SplitSamByNumberOfReads \
       INPUT=~{input_bam} \
       OUTPUT=output_dir \
       SPLIT_TO_N_READS=~{n_reads} \
       TOTAL_READS_IN_INPUT=$total_reads
   }
+
   output {
     Array[File] split_bams = glob("output_dir/*.bam")
   }
+  
   runtime {
     docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: true
