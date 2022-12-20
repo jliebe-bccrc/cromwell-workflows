@@ -1,0 +1,9 @@
+Rscript ../runIchorCNA.R --id TUMOR_SAMPLE \
+	--WIG TUMOR_SAMPLE.wig --ploidy "c(2,3)" --normal "c(0.5,0.6,0.7,0.8,0.9)" --maxCN 5 \
+	--gcWig FILEPATH/TO/gc_hg38_1000kb.wig \
+	--mapWig FILEPATH/TO/map_hg38_1000kb.wig \
+	--centromere FILEPATH/TO/GRCh38.GCA_000001405.2_centromere_acen.txt \
+	--NORMWIG NORMAL_SAMPLE.wig \
+	--includeHOMD False --chrs "c(1:22, \"X\")" --chrTrain "c(1:22)" \
+	--estimateNormal True --estimatePloidy True --estimateScPrevalence True \
+	--scStates "c(1,3)" --txnE 0.9999 --txnStrength 10000 --outDir ./
