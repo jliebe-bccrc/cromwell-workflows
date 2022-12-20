@@ -5,6 +5,8 @@ ReadCounter was developed by Daniel Lai (and Gavin Ha) in the Shah Lab at the BC
 
 The docker used to call ReadCounter was contributed by the Fred Hutch Lab and can be found at https://hub.docker.com/r/fredhutch/ichorcna.
 
+The output WIG files from ReadCounter can then be sent through ichorCNA for copy number analysis. The runIchorCNA.R script can be found at https://github.com/broadinstitute/ichorCNA/tree/master/scripts, and a template file for calls to this script is included in this repo.
+
 ---
 
 **read-counter-multi.inputs.json:** 
